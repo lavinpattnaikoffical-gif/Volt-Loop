@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { Booking, Charger, Vehicle } from "@/types";
+import { Booking, Charger } from "@/types";
 import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
 import {
@@ -11,13 +11,10 @@ import {
   Zap,
   Calendar,
   Clock,
-  Star,
   PlusCircle,
   MapPin,
   ArrowRight,
-  ShieldCheck,
   Lock,
-  Trash2,
   X,
 } from "lucide-react";
 
@@ -102,26 +99,26 @@ function DashboardContent() {
     }
   };
 
-  // If unauthenticated: Show required Auth state
+  // If unauthenticated: Show clean Vercel lock screen
   if (!user) {
     return (
-      <div className="min-h-[75vh] flex items-center justify-center p-4 bg-[#070b14]">
-        <div className="max-w-md w-full glass-card rounded-3xl p-8 text-center border border-slate-800 shadow-2xl">
-          <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center mx-auto mb-4 border border-emerald-500/25">
-            <Lock className="w-7 h-7" />
+      <div className="min-h-[75vh] flex items-center justify-center p-4 bg-black">
+        <div className="max-w-md w-full vercel-card p-8 text-center border-[#262626]">
+          <div className="w-10 h-10 rounded-lg bg-[#141414] text-white flex items-center justify-center mx-auto mb-4 border border-[#333333]">
+            <Lock className="w-5 h-5" />
           </div>
-          <h2 className="text-2xl font-black text-white mb-2">
-            Sign in to continue
+          <h2 className="text-xl font-bold text-white mb-2">
+            Authentication Required
           </h2>
-          <p className="text-xs text-slate-400 mb-6 leading-relaxed">
-            Please sign in to view your EV charging bookings, manage your vehicles, or monitor host earnings on VOLTLOOP.
+          <p className="text-xs text-[#888888] mb-6 leading-relaxed">
+            Please log in to manage your EV bookings, registered vehicles, and host settings.
           </p>
 
           <button
             onClick={openAuthModal}
-            className="w-full flex items-center justify-center gap-3 py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 font-bold text-sm shadow-lg shadow-emerald-500/20 hover:scale-[1.02] transition"
+            className="w-full py-2.5 px-4 rounded-md bg-white text-black font-medium text-xs sm:text-sm hover:bg-[#d4d4d4] transition-colors"
           >
-            <span>Sign In to Continue</span>
+            Log In to Continue
           </button>
         </div>
       </div>
@@ -149,44 +146,41 @@ function DashboardContent() {
   ).length;
 
   return (
-    <div className="min-h-screen bg-[#070b14] text-slate-100 pt-24 pb-20">
+    <div className="min-h-screen bg-black text-[#ededed] pt-20 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        {/* Top Banner / Mode Switcher */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+        {/* Top Header & Tab Switcher (Vercel Style) */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-[#262626]">
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-xs font-semibold uppercase tracking-wider mb-2">
-              Member: {profile?.name || user.email}
+            <div className="text-xs font-mono text-[#888888] mb-1">
+              Signed in as {profile?.name || user.email}
             </div>
-            <h1 className="text-3xl font-black text-white tracking-tight">VoltLoop Dashboard</h1>
-            <p className="text-xs text-slate-400 mt-1">
-              Manage your charging bookings, registered vehicles, and host earnings.
-            </p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">Dashboard</h1>
           </div>
 
           {/* Tab Switcher Pills */}
-          <div className="p-1.5 bg-slate-900/90 border border-slate-800 rounded-2xl flex items-center gap-1 shadow-sm">
+          <div className="p-1 bg-[#111111] border border-[#262626] rounded-lg flex items-center gap-1">
             <button
               onClick={() => setActiveTab("driver")}
-              className={`flex items-center gap-2 px-5 py-2 rounded-xl text-xs font-bold transition-all ${
+              className={`flex items-center gap-1.5 px-4 py-1.5 rounded-md text-xs font-medium transition-colors ${
                 activeTab === "driver"
-                  ? "bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 shadow-md shadow-emerald-500/20"
-                  : "text-slate-400 hover:text-white hover:bg-slate-800/60"
+                  ? "bg-[#262626] text-white shadow-sm"
+                  : "text-[#888888] hover:text-white"
               }`}
             >
-              <Car className="w-4 h-4" />
-              <span>Driver Mode</span>
+              <Car className="w-3.5 h-3.5" />
+              <span>Driver</span>
             </button>
 
             <button
               onClick={() => setActiveTab("host")}
-              className={`flex items-center gap-2 px-5 py-2 rounded-xl text-xs font-bold transition-all ${
+              className={`flex items-center gap-1.5 px-4 py-1.5 rounded-md text-xs font-medium transition-colors ${
                 activeTab === "host"
-                  ? "bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 shadow-md shadow-emerald-500/20"
-                  : "text-slate-400 hover:text-white hover:bg-slate-800/60"
+                  ? "bg-[#262626] text-white shadow-sm"
+                  : "text-[#888888] hover:text-white"
               }`}
             >
-              <Home className="w-4 h-4" />
-              <span>Host Mode</span>
+              <Home className="w-3.5 h-3.5" />
+              <span>Host</span>
             </button>
           </div>
         </div>
@@ -195,34 +189,34 @@ function DashboardContent() {
         {/* DRIVER MODE */}
         {/* ============================================================== */}
         {activeTab === "driver" && (
-          <div className="space-y-8 animate-in fade-in duration-200">
+          <div className="space-y-8">
             {/* Upcoming Reservations */}
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                  <Calendar className="w-5 h-5 text-emerald-400" />
-                  <span>Your Bookings</span>
+                <h3 className="text-sm font-semibold text-white flex items-center gap-2">
+                  <Calendar className="w-4 h-4 text-[#a1a1a1]" />
+                  <span>Active &amp; Upcoming Bookings</span>
                 </h3>
                 <Link
                   href="/explore"
-                  className="text-xs font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1"
+                  className="text-xs font-medium text-white hover:underline flex items-center gap-1"
                 >
-                  <span>Book New Session</span>
+                  <span>Book New Charger</span>
                   <ArrowRight className="w-3 h-3" />
                 </Link>
               </div>
 
               {upcomingDriverBookings.length === 0 ? (
-                <div className="p-8 text-center glass-card border border-slate-800 rounded-3xl">
-                  <h4 className="font-bold text-base text-white mb-1">
-                    No active bookings
+                <div className="p-8 text-center vercel-card">
+                  <h4 className="font-semibold text-sm text-white mb-1">
+                    No active bookings found
                   </h4>
-                  <p className="text-xs text-slate-400 mb-4 max-w-sm mx-auto">
-                    Explore verified community chargers near you and reserve your guaranteed overnight plug-in.
+                  <p className="text-xs text-[#888888] mb-4 max-w-sm mx-auto">
+                    Search 300+ community chargers across your route and reserve guaranteed overnight AC charging.
                   </p>
                   <Link
                     href="/explore"
-                    className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 text-xs font-bold shadow-md shadow-emerald-500/20 transition"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-md bg-white text-black text-xs font-medium hover:bg-[#d4d4d4] transition-colors"
                   >
                     <span>Find a Charger</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -233,46 +227,46 @@ function DashboardContent() {
                   {upcomingDriverBookings.map((b) => (
                     <div
                       key={b.bookingId}
-                      className="p-5 rounded-3xl glass-card border border-slate-800 space-y-3"
+                      className="p-5 vercel-card space-y-3"
                     >
                       <div className="flex justify-between items-start">
                         <div>
-                          <span className="text-[10px] font-mono text-slate-500 block">
+                          <span className="text-[10px] font-mono text-[#666666] block">
                             ID: {b.bookingId}
                           </span>
-                          <h4 className="font-bold text-base text-white">
+                          <h4 className="font-semibold text-sm text-white mt-0.5">
                             {b.chargerTitle}
                           </h4>
-                          <span className="text-xs text-slate-400 flex items-center gap-1 mt-0.5">
-                            <MapPin className="w-3.5 h-3.5 text-emerald-400" />
+                          <span className="text-xs text-[#888888] flex items-center gap-1 mt-0.5">
+                            <MapPin className="w-3.5 h-3.5 text-[#666666]" />
                             {b.chargerAddress}, {b.chargerCity}
                           </span>
                         </div>
-                        <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                        <span className="text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-[#171717] border border-[#262626] text-emerald-400">
                           {b.status}
                         </span>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-2 text-xs p-3 rounded-2xl bg-slate-950/60 border border-slate-800">
+                      <div className="grid grid-cols-2 gap-2 text-xs p-3 rounded-lg bg-[#000000] border border-[#222222]">
                         <div>
-                          <span className="text-[10px] text-slate-500 block">Duration:</span>
-                          <strong className="text-slate-200">{b.estimatedChargingTime}</strong>
+                          <span className="text-[10px] text-[#666666] font-mono block">Estimated Time:</span>
+                          <span className="text-white font-mono">{b.estimatedChargingTime}</span>
                         </div>
                         <div>
-                          <span className="text-[10px] text-slate-500 block">Total Amount:</span>
-                          <strong className="text-emerald-400 font-bold">₹{b.totalCost}</strong>
+                          <span className="text-[10px] text-[#666666] font-mono block">Total Cost:</span>
+                          <span className="text-white font-mono font-bold">₹{b.totalCost}</span>
                         </div>
                       </div>
 
                       <div className="flex items-center justify-between text-xs pt-1">
-                        <span className="text-slate-400">
-                          Energy: ~{b.estimatedEnergyKwh} kWh
+                        <span className="text-[#888888] font-mono">
+                          Draw: ~{b.estimatedEnergyKwh} kWh
                         </span>
                         <Link
                           href={`/charger/${b.chargerId}`}
-                          className="font-bold text-emerald-400 hover:underline"
+                          className="font-medium text-white hover:underline"
                         >
-                          View Charger Details →
+                          View Details →
                         </Link>
                       </div>
                     </div>
@@ -284,34 +278,34 @@ function DashboardContent() {
             {/* Past Charging History */}
             {pastDriverBookings.length > 0 && (
               <div className="space-y-4">
-                <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                  <Clock className="w-5 h-5 text-slate-400" />
-                  <span>Past Charging History</span>
+                <h3 className="text-sm font-semibold text-white flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-[#888888]" />
+                  <span>Session History</span>
                 </h3>
 
-                <div className="glass-card border border-slate-800 rounded-3xl overflow-hidden shadow-sm">
+                <div className="vercel-card overflow-hidden">
                   <div className="overflow-x-auto">
-                    <table className="w-full text-left text-xs">
-                      <thead className="bg-slate-950/80 text-slate-400 uppercase text-[10px] border-b border-slate-800">
+                    <table className="w-full text-left text-xs font-mono">
+                      <thead className="bg-[#111111] text-[#888888] uppercase text-[10px] border-b border-[#262626]">
                         <tr>
-                          <th className="p-3.5">Booking ID</th>
-                          <th className="p-3.5">Location</th>
-                          <th className="p-3.5">Energy</th>
-                          <th className="p-3.5">Duration</th>
-                          <th className="p-3.5">Amount</th>
-                          <th className="p-3.5">Status</th>
+                          <th className="p-3">ID</th>
+                          <th className="p-3">Location</th>
+                          <th className="p-3">Energy</th>
+                          <th className="p-3">Duration</th>
+                          <th className="p-3">Cost</th>
+                          <th className="p-3">Status</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-800 text-slate-200">
+                      <tbody className="divide-y divide-[#222222] text-[#ededed]">
                         {pastDriverBookings.map((pb) => (
-                          <tr key={pb.bookingId} className="hover:bg-slate-800/40">
-                            <td className="p-3.5 font-mono text-[11px] text-slate-400">{pb.bookingId}</td>
-                            <td className="p-3.5 font-semibold text-white">{pb.chargerTitle}</td>
-                            <td className="p-3.5">~{pb.estimatedEnergyKwh} kWh</td>
-                            <td className="p-3.5">~{pb.estimatedChargingTime}</td>
-                            <td className="p-3.5 font-bold text-emerald-400">₹{pb.totalCost}</td>
-                            <td className="p-3.5">
-                              <span className="px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 text-[10px] font-bold border border-emerald-500/30">
+                          <tr key={pb.bookingId} className="hover:bg-[#141414]">
+                            <td className="p-3 text-[#888888]">{pb.bookingId}</td>
+                            <td className="p-3 font-sans font-medium text-white">{pb.chargerTitle}</td>
+                            <td className="p-3">~{pb.estimatedEnergyKwh} kWh</td>
+                            <td className="p-3">~{pb.estimatedChargingTime}</td>
+                            <td className="p-3 font-bold text-white">₹{pb.totalCost}</td>
+                            <td className="p-3">
+                              <span className="px-2 py-0.5 rounded bg-[#171717] border border-[#262626] text-emerald-400 text-[10px]">
                                 {pb.status}
                               </span>
                             </td>
@@ -325,15 +319,15 @@ function DashboardContent() {
             )}
 
             {/* My Vehicles */}
-            <div className="glass-card border border-slate-800 rounded-3xl p-6 shadow-sm">
+            <div className="vercel-card p-6">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                  <Car className="w-4 h-4 text-emerald-400" />
-                  <span>My Vehicles</span>
+                <h3 className="text-sm font-semibold text-white flex items-center gap-2">
+                  <Car className="w-4 h-4 text-[#888888]" />
+                  <span>Registered Vehicles</span>
                 </h3>
                 <button
                   onClick={() => setShowAddVehicleModal(true)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/20 transition"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium bg-white text-black hover:bg-[#d4d4d4] transition-colors"
                 >
                   <PlusCircle className="w-3.5 h-3.5" />
                   <span>Add Vehicle</span>
@@ -341,28 +335,28 @@ function DashboardContent() {
               </div>
 
               {vehicles.length === 0 ? (
-                <div className="p-5 text-center rounded-2xl bg-slate-950/40 border border-dashed border-slate-800">
-                  <p className="text-xs text-slate-400">
-                    Adding your EV helps us calculate accurate charging times and costs based on your battery capacity.
+                <div className="p-4 text-center rounded-lg bg-[#000000] border border-dashed border-[#262626]">
+                  <p className="text-xs text-[#888888]">
+                    Add your vehicle to automatically match compatible chargers and calculate precise overnight charging times.
                   </p>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                   {vehicles.map((v) => (
                     <div
                       key={v.vehicleId}
-                      className="p-4 rounded-2xl bg-slate-950/60 border border-slate-800 flex items-center justify-between"
+                      className="p-3.5 rounded-lg bg-[#000000] border border-[#262626] flex items-center justify-between"
                     >
                       <div>
-                        <h4 className="font-bold text-sm text-white">
+                        <h4 className="font-medium text-sm text-white">
                           {v.brand} {v.model}
                         </h4>
-                        <p className="text-xs text-slate-400">
-                          {v.batteryCapacityKwh} kWh • {v.connectorType} (Max {v.maxAcChargingKw} kW AC)
+                        <p className="text-xs text-[#888888] font-mono mt-0.5">
+                          {v.batteryCapacityKwh} kWh • {v.connectorType}
                         </p>
                       </div>
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                        Active
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#171717] border border-[#262626] text-emerald-400">
+                        Default
                       </span>
                     </div>
                   ))}
@@ -376,79 +370,79 @@ function DashboardContent() {
         {/* HOST MODE */}
         {/* ============================================================== */}
         {activeTab === "host" && (
-          <div className="space-y-8 animate-in fade-in duration-200">
+          <div className="space-y-8">
             {/* Host Analytics Cards */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="glass-card border border-slate-800 rounded-3xl p-5">
-                <span className="text-xs text-slate-400 uppercase font-semibold block mb-1">
-                  Host Earnings
+              <div className="vercel-card p-5">
+                <span className="text-xs font-mono text-[#888888] uppercase block mb-1">
+                  Gross Earnings
                 </span>
-                <strong className="text-2xl sm:text-3xl font-black text-emerald-400">
+                <strong className="text-2xl font-bold text-white font-mono">
                   ₹{realEarnings.toLocaleString()}
                 </strong>
-                <span className="text-[10px] text-slate-500 block mt-1">Real completed sessions</span>
+                <span className="text-[10px] font-mono text-[#666666] block mt-1">Direct payout</span>
               </div>
 
-              <div className="glass-card border border-slate-800 rounded-3xl p-5">
-                <span className="text-xs text-slate-400 uppercase font-semibold block mb-1">
-                  Charging Sessions
+              <div className="vercel-card p-5">
+                <span className="text-xs font-mono text-[#888888] uppercase block mb-1">
+                  Total Sessions
                 </span>
-                <strong className="text-2xl sm:text-3xl font-black text-white">
+                <strong className="text-2xl font-bold text-white font-mono">
                   {realSessionsCount}
                 </strong>
-                <span className="text-[10px] text-slate-500 block mt-1">Total reservations</span>
+                <span className="text-[10px] font-mono text-[#666666] block mt-1">Completed bookings</span>
               </div>
 
-              <div className="glass-card border border-slate-800 rounded-3xl p-5">
-                <span className="text-xs text-slate-400 uppercase font-semibold block mb-1">
-                  Active Wallboxes
+              <div className="vercel-card p-5">
+                <span className="text-xs font-mono text-[#888888] uppercase block mb-1">
+                  Listed Chargers
                 </span>
-                <strong className="text-2xl sm:text-3xl font-black text-teal-400">
+                <strong className="text-2xl font-bold text-white font-mono">
                   {hostChargers.length}
                 </strong>
-                <span className="text-[10px] text-slate-500 block mt-1">Listed chargers</span>
+                <span className="text-[10px] font-mono text-[#666666] block mt-1">Online wallboxes</span>
               </div>
 
-              <div className="glass-card border border-slate-800 rounded-3xl p-5">
-                <span className="text-xs text-slate-400 uppercase font-semibold block mb-1">
-                  Average Rating
+              <div className="vercel-card p-5">
+                <span className="text-xs font-mono text-[#888888] uppercase block mb-1">
+                  Host Rating
                 </span>
-                <strong className="text-2xl sm:text-3xl font-black text-amber-400 flex items-center gap-1">
+                <strong className="text-2xl font-bold text-amber-400 font-mono">
                   ★ {hostChargers.length > 0 ? (hostChargers.reduce((s, c) => s + c.rating, 0) / hostChargers.length).toFixed(1) : "—"}
                 </strong>
-                <span className="text-[10px] text-slate-500 block mt-1">Verified reviews</span>
+                <span className="text-[10px] font-mono text-[#666666] block mt-1">Driver verified</span>
               </div>
             </div>
 
             {/* My Listed Chargers */}
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                  <Zap className="w-5 h-5 text-emerald-400" />
-                  <span>My Listed Wallboxes</span>
+                <h3 className="text-sm font-semibold text-white flex items-center gap-2">
+                  <Zap className="w-4 h-4 text-[#888888]" />
+                  <span>My Charging Points</span>
                 </h3>
                 <Link
                   href="/host/list"
-                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 font-bold text-xs shadow-md shadow-emerald-500/20 transition flex items-center gap-1.5"
+                  className="px-3 py-1.5 rounded-md bg-white text-black font-medium text-xs hover:bg-[#d4d4d4] transition-colors flex items-center gap-1.5"
                 >
-                  <PlusCircle className="w-4 h-4" />
-                  <span>List Your Charger</span>
+                  <PlusCircle className="w-3.5 h-3.5" />
+                  <span>List New Wallbox</span>
                 </Link>
               </div>
 
               {hostChargers.length === 0 ? (
-                <div className="p-8 text-center glass-card border border-slate-800 rounded-3xl">
-                  <h4 className="font-bold text-base text-white mb-1">
-                    You haven&apos;t listed a charger yet.
+                <div className="p-8 text-center vercel-card">
+                  <h4 className="font-semibold text-sm text-white mb-1">
+                    No charging points registered
                   </h4>
-                  <p className="text-xs text-slate-400 mb-4 max-w-sm mx-auto">
-                    Turn your idle home wallbox into a community charging station and earn passive income overnight.
+                  <p className="text-xs text-[#888888] mb-4 max-w-sm mx-auto">
+                    Turn your private home charger into a community node and earn reliable income during overnight hours.
                   </p>
                   <Link
                     href="/host/list"
-                    className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 text-xs font-bold shadow-md shadow-emerald-500/20 transition"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-md bg-white text-black text-xs font-medium hover:bg-[#d4d4d4] transition-colors"
                   >
-                    <PlusCircle className="w-4 h-4" />
+                    <PlusCircle className="w-3.5 h-3.5" />
                     <span>List Your Charger</span>
                   </Link>
                 </div>
@@ -457,54 +451,54 @@ function DashboardContent() {
                   {hostChargers.map((hc) => (
                     <div
                       key={hc.chargerId}
-                      className="p-5 rounded-3xl glass-card border border-slate-800 space-y-3"
+                      className="p-5 vercel-card space-y-3"
                     >
                       <div className="flex justify-between items-start">
                         <div>
                           <span
-                            className={`text-[10px] px-2.5 py-0.5 rounded-full font-bold ${
+                            className={`text-[10px] font-mono px-2 py-0.5 rounded border ${
                               hc.verificationStatus === "VERIFIED"
-                                ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-                                : "bg-amber-500/20 text-amber-400 border border-amber-500/30"
+                                ? "bg-[#141414] border-emerald-900/50 text-emerald-400"
+                                : "bg-[#141414] border-amber-900/50 text-amber-400"
                             }`}
                           >
-                            {hc.verificationStatus === "VERIFIED" ? "🟢 ACTIVE" : "⏳ PENDING REVIEW"}
+                            {hc.verificationStatus === "VERIFIED" ? "ACTIVE" : "PENDING REVIEW"}
                           </span>
-                          <h4 className="font-bold text-base text-white mt-2">{hc.title}</h4>
-                          <p className="text-xs text-slate-400 flex items-center gap-1 mt-0.5">
-                            <MapPin className="w-3.5 h-3.5 text-emerald-400" />
+                          <h4 className="font-semibold text-sm text-white mt-1.5">{hc.title}</h4>
+                          <p className="text-xs text-[#888888] flex items-center gap-1 mt-0.5">
+                            <MapPin className="w-3 h-3 text-[#666666]" />
                             {hc.address}, {hc.city}
                           </p>
                         </div>
-                        <span className="text-sm font-black text-emerald-400">
+                        <span className="text-xs font-mono font-bold text-white bg-[#141414] border border-[#262626] px-2 py-0.5 rounded">
                           {hc.powerKw} kW AC
                         </span>
                       </div>
 
-                      <div className="grid grid-cols-3 gap-2 text-center text-xs p-3 rounded-2xl bg-slate-950/60 border border-slate-800">
+                      <div className="grid grid-cols-3 gap-2 text-center text-xs p-2.5 rounded-lg bg-[#000000] border border-[#222222]">
                         <div>
-                          <span className="text-[10px] text-slate-500 block">Tariff</span>
-                          <strong className="text-slate-200">₹{hc.electricityRate}/kWh</strong>
+                          <span className="text-[10px] font-mono text-[#666666] block">Tariff</span>
+                          <span className="text-white font-mono">₹{hc.electricityRate}/kWh</span>
                         </div>
                         <div>
-                          <span className="text-[10px] text-slate-500 block">Host Fee</span>
-                          <strong className="text-emerald-400">₹{hc.hostFee}/slot</strong>
+                          <span className="text-[10px] font-mono text-[#666666] block">Host Fee</span>
+                          <span className="text-white font-mono">₹{hc.hostFee}/slot</span>
                         </div>
                         <div>
-                          <span className="text-[10px] text-slate-500 block">Platform Fee</span>
-                          <strong className="text-slate-400">₹{hc.platformFee}</strong>
+                          <span className="text-[10px] font-mono text-[#666666] block">Platform</span>
+                          <span className="text-[#888888] font-mono">₹{hc.platformFee}</span>
                         </div>
                       </div>
 
                       <div className="flex items-center justify-between text-xs pt-1">
-                        <span className="text-slate-400">
-                          Hours: {hc.availableFrom} → {hc.availableUntil}
+                        <span className="text-[#888888] font-mono">
+                          Window: {hc.availableFrom} → {hc.availableUntil}
                         </span>
                         <Link
                           href={`/charger/${hc.chargerId}`}
-                          className="font-bold text-emerald-400 hover:underline"
+                          className="font-medium text-white hover:underline"
                         >
-                          Public View →
+                          Public Page →
                         </Link>
                       </div>
                     </div>
@@ -518,52 +512,52 @@ function DashboardContent() {
 
       {/* ADD VEHICLE MODAL */}
       {showAddVehicleModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-in fade-in duration-150">
-          <div className="relative w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-7 shadow-2xl text-white">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-100">
+          <div className="relative w-full max-w-md vercel-card p-6 border-[#333333] shadow-2xl">
             <button
               onClick={() => setShowAddVehicleModal(false)}
-              className="absolute top-5 right-5 p-2 rounded-full text-slate-400 hover:text-white hover:bg-slate-800 transition"
+              className="absolute top-4 right-4 p-1.5 rounded-md text-[#888888] hover:text-white hover:bg-[#171717] transition-colors"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" />
             </button>
 
-            <h3 className="text-xl font-bold text-white mb-1">Add Your Vehicle</h3>
-            <p className="text-xs text-slate-400 mb-5">
-              Add your EV to calculate real charging speeds, costs, and battery ranges.
+            <h3 className="text-lg font-bold text-white mb-1">Add Vehicle</h3>
+            <p className="text-xs text-[#888888] mb-5">
+              Specify your vehicle to calculate exact charging speed and cost compatibility.
             </p>
 
-            <form onSubmit={handleCreateVehicle} className="space-y-4">
+            <form onSubmit={handleCreateVehicle} className="space-y-3.5">
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">
+                <label className="block text-xs font-mono text-[#a1a1a1] mb-1">
                   Brand
                 </label>
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Tata, MG, Mahindra, Hyundai"
+                  placeholder="Tata, MG, Mahindra, etc."
                   value={vBrand}
                   onChange={(e) => setVBrand(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-sm text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full px-3 py-2 rounded-md bg-[#141414] border border-[#262626] text-xs text-white outline-none focus:border-[#555555]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">
+                <label className="block text-xs font-mono text-[#a1a1a1] mb-1">
                   Model
                 </label>
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Nexon EV, ZS EV, XUV400"
+                  placeholder="Nexon EV, ZS EV, etc."
                   value={vModel}
                   onChange={(e) => setVModel(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-sm text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full px-3 py-2 rounded-md bg-[#141414] border border-[#262626] text-xs text-white outline-none focus:border-[#555555]"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">
+                  <label className="block text-xs font-mono text-[#a1a1a1] mb-1">
                     Battery (kWh)
                   </label>
                   <input
@@ -573,12 +567,12 @@ function DashboardContent() {
                     placeholder="40.5"
                     value={vBattery}
                     onChange={(e) => setVBattery(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-sm text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full px-3 py-2 rounded-md bg-[#141414] border border-[#262626] text-xs text-white outline-none focus:border-[#555555]"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">
+                  <label className="block text-xs font-mono text-[#a1a1a1] mb-1">
                     Max AC (kW)
                   </label>
                   <input
@@ -588,20 +582,20 @@ function DashboardContent() {
                     placeholder="7.2"
                     value={vPower}
                     onChange={(e) => setVPower(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-sm text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full px-3 py-2 rounded-md bg-[#141414] border border-[#262626] text-xs text-white outline-none focus:border-[#555555]"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">
-                  Connector Type
+                <label className="block text-xs font-mono text-[#a1a1a1] mb-1">
+                  Connector
                 </label>
                 <select
                   value={vConnector}
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   onChange={(e) => setVConnector(e.target.value as any)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-sm text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full px-3 py-2 rounded-md bg-[#141414] border border-[#262626] text-xs text-white outline-none focus:border-[#555555]"
                 >
                   <option value="Type 2">Type 2 (IEC 62196)</option>
                   <option value="CCS2">CCS2</option>
@@ -612,9 +606,9 @@ function DashboardContent() {
               <button
                 type="submit"
                 disabled={isSubmittingVehicle}
-                className="w-full mt-2 py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 font-bold text-sm shadow-lg shadow-emerald-500/20 transition disabled:opacity-50"
+                className="w-full mt-2 py-2 px-4 rounded-md bg-white text-black font-medium text-xs hover:bg-[#d4d4d4] transition-colors disabled:opacity-50"
               >
-                {isSubmittingVehicle ? "Saving Vehicle..." : "Save Vehicle"}
+                {isSubmittingVehicle ? "Saving..." : "Save Vehicle"}
               </button>
             </form>
           </div>
@@ -628,8 +622,8 @@ export default function DashboardPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex items-center justify-center min-h-[70vh] bg-[#070b14]">
-          <div className="w-8 h-8 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin" />
+        <div className="flex items-center justify-center min-h-[70vh] bg-black">
+          <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
         </div>
       }
     >

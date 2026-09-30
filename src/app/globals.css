@@ -2,95 +2,124 @@
 @import "leaflet/dist/leaflet.css";
 
 :root {
-  --background: #060911;
-  --foreground: #f8fafc;
-  --surface: #0b1120;
-  --surface-muted: #111827;
-  --surface-card: #0e1626;
-  --surface-border: #1e293b;
-  --primary: #10b981;
-  --primary-glow: rgba(16, 185, 129, 0.35);
-  --secondary: #06b6d4;
-  --accent: #34d399;
-  --radius: 1rem;
+  --background: #000000;
+  --foreground: #ededed;
+  --surface: #0a0a0a;
+  --surface-card: #0a0a0a;
+  --surface-border: #262626;
+  --surface-border-hover: #404040;
+  --primary: #ffffff;
+  --secondary: #0070f3;
+  --accent: #10b981;
+  --muted: #a1a1a1;
+  --radius: 0.5rem;
 }
 
 body {
-  background-color: #060911;
-  color: #f8fafc;
-  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #000000;
+  color: #ededed;
+  font-family: var(--font-geist-sans), Inter, system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   background-image: 
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(16, 185, 129, 0.12), transparent),
-    radial-gradient(ellipse 60% 40% at 80% 60%, rgba(6, 182, 212, 0.06), transparent);
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
   background-attachment: fixed;
 }
 
-/* Glassmorphism & Elevation utilities */
-.glass-panel {
-  background: rgba(15, 23, 42, 0.72);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(51, 65, 85, 0.6);
+/* Vercel clean card styling */
+.vercel-card {
+  background-color: #0a0a0a;
+  border: 1px solid #222222;
+  border-radius: 12px;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
-.glass-card {
-  background: rgba(14, 22, 38, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(30, 41, 59, 0.9);
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+.vercel-card:hover {
+  border-color: #444444;
+  background-color: #0d0d0d;
 }
 
-.glass-card:hover {
-  border-color: rgba(16, 185, 129, 0.35);
-  box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.6), 0 0 20px -5px rgba(16, 185, 129, 0.15);
-  transform: translateY(-2px);
+.vercel-card-active {
+  background-color: #0d0d0d;
+  border: 1px solid #ffffff;
 }
 
-.glow-emerald {
-  box-shadow: 0 0 25px -4px rgba(16, 185, 129, 0.4);
+/* Vercel buttons */
+.btn-primary {
+  background-color: #ffffff;
+  color: #000000;
+  font-weight: 500;
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
-.glow-cyan {
-  box-shadow: 0 0 25px -4px rgba(6, 182, 212, 0.4);
+.btn-primary:hover {
+  background-color: #d4d4d4;
 }
 
-.text-gradient-emerald {
-  background: linear-gradient(135deg, #ffffff 20%, #6ee7b7 70%, #10b981 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.btn-secondary {
+  background-color: #0a0a0a;
+  color: #ededed;
+  font-weight: 500;
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #262626;
+  transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
-.text-gradient-cyan {
-  background: linear-gradient(135deg, #a5f3fc 0%, #38bdf8 50%, #06b6d4 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.btn-secondary:hover {
+  border-color: #444444;
+  background-color: #141414;
+  color: #ffffff;
 }
 
-/* Custom Leaflet Map styling for high-tech dark theme */
+/* Vercel Badge */
+.vercel-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.75rem;
+  font-family: var(--font-geist-mono), monospace;
+  border-radius: 9999px;
+  background-color: #0a0a0a;
+  border: 1px solid #262626;
+  color: #a1a1a1;
+}
+
+/* Custom Leaflet Map styling for Vercel dark theme */
 .leaflet-container {
   width: 100%;
   height: 100%;
-  background-color: #0b1120 !important;
+  background-color: #000000 !important;
   font-family: inherit;
   border-radius: inherit;
   z-index: 10;
 }
 
-/* Dark mode filter for standard OSM tiles */
 .dark-tiles .leaflet-tile-pane {
-  filter: brightness(0.68) invert(1) contrast(3.2) hue-rotate(200deg) saturate(0.35);
+  filter: brightness(0.6) invert(1) contrast(3) hue-rotate(180deg) saturate(0.2);
 }
 
 .leaflet-popup-content-wrapper {
-  background-color: #0f172a !important;
-  color: #f8fafc !important;
-  border: 1px solid #334155;
-  border-radius: 16px !important;
-  box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.7), 0 0 25px -5px rgba(16, 185, 129, 0.2) !important;
+  background-color: #0a0a0a !important;
+  color: #ededed !important;
+  border: 1px solid #262626;
+  border-radius: 12px !important;
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.8) !important;
   padding: 0 !important;
   overflow: hidden;
 }
@@ -101,40 +130,34 @@ body {
 }
 
 .leaflet-popup-tip {
-  background-color: #0f172a !important;
-  border: 1px solid #334155;
+  background-color: #0a0a0a !important;
+  border: 1px solid #262626;
 }
 
 /* Custom Marker styling */
 .charger-pin-green {
   background: #10b981;
   border: 2px solid #ffffff;
-  box-shadow: 0 0 14px rgba(16, 185, 129, 0.8);
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
 }
 
 .charger-pin-yellow {
   background: #f59e0b;
   border: 2px solid #ffffff;
-  box-shadow: 0 0 14px rgba(245, 158, 11, 0.8);
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.6);
 }
 
 .charger-pin-red {
-  background: #f43f5e;
+  background: #ef4444;
   border: 2px solid #ffffff;
-  box-shadow: 0 0 14px rgba(244, 63, 94, 0.8);
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
 }
 
 /* Elevation utilities */
 .card-elevation {
-  background-color: #0f172a;
-  border: 1px solid #1e293b;
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
-}
-
-.card-elevation-high {
-  background-color: #0f172a;
-  border: 1px solid #334155;
-  box-shadow: 0 14px 35px -5px rgba(0, 0, 0, 0.6);
+  background-color: #0a0a0a;
+  border: 1px solid #262626;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.5);
 }
 
 /* Mobile bottom nav safe area */
@@ -144,21 +167,21 @@ body {
 
 /* Custom modern scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #090d16;
+  background: #000000;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
-  border-radius: 4px;
+  background: #262626;
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #404040;
 }
 
 /* Hide footer on mobile when bottom nav is visible */
