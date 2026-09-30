@@ -1,0 +1,457 @@
+/**
+ * Seed ~280 community chargers across all Indian states into Supabase.
+ * Run: node scripts/seed-india-chargers.js
+ */
+
+const fs = require('fs');
+const envStr = fs.readFileSync('.env.local', 'utf-8');
+const env = Object.fromEntries(
+  envStr.split('\n')
+    .filter(l => l.includes('=') && !l.startsWith('#'))
+    .map(l => { const [k, ...v] = l.trim().split('='); return [k, v.join('=')]; })
+);
+const { createClient } = require('@supabase/supabase-js');
+const sb = createClient(env.NEXT_PUBLIC_SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY);
+
+const OWNER_ID = '32df9dbf-6f71-494e-b700-aa13dec85339';
+
+const INDIAN_STATES = [
+  { state: 'Andhra Pradesh', cities: [
+    { city: 'Visakhapatnam', lat: 17.6868, lng: 83.2185, area: 'Beach Road, MVP Colony' },
+    { city: 'Vijayawada', lat: 16.5062, lng: 80.6480, area: 'MG Road, Labbipet' },
+    { city: 'Tirupati', lat: 13.6288, lng: 79.4192, area: 'Tirumala Bypass Road' },
+    { city: 'Guntur', lat: 16.3067, lng: 80.4365, area: 'Brodipet Main Road' },
+    { city: 'Kurnool', lat: 15.8281, lng: 78.0373, area: 'Bellary Road, Old Town' },
+    { city: 'Rajahmundry', lat: 17.0005, lng: 81.8040, area: 'Station Road, Innespeta' },
+    { city: 'Nellore', lat: 14.4426, lng: 79.9865, area: 'Grand Trunk Road' },
+    { city: 'Kakinada', lat: 16.9891, lng: 82.2475, area: 'Main Road, Kakinada Port' },
+    { city: 'Kadapa', lat: 14.4674, lng: 78.8241, area: 'Railway Station Road' },
+    { city: 'Anantapur', lat: 14.6819, lng: 77.6006, area: 'Bellary Road, Anantapur' },
+  ]},
+  { state: 'Arunachal Pradesh', cities: [
+    { city: 'Itanagar', lat: 27.0844, lng: 93.6053, area: 'Ganga Market' },
+    { city: 'Naharlagun', lat: 27.1045, lng: 93.6966, area: 'NH 415, Main Market' },
+    { city: 'Pasighat', lat: 28.0667, lng: 95.3333, area: 'Siang Colony' },
+    { city: 'Tawang', lat: 27.5861, lng: 91.8687, area: 'Old Market Road' },
+    { city: 'Ziro', lat: 27.5400, lng: 93.8300, area: 'Hapoli Market' },
+    { city: 'Bomdila', lat: 27.2645, lng: 92.4159, area: 'Main Bazaar' },
+    { city: 'Along', lat: 28.1664, lng: 94.8000, area: 'Market Road' },
+    { city: 'Tezu', lat: 27.9167, lng: 96.1667, area: 'Lohit Colony' },
+    { city: 'Roing', lat: 28.1400, lng: 95.8500, area: 'Dibang Valley Road' },
+    { city: 'Daporijo', lat: 27.9833, lng: 94.2167, area: 'Upper Subansiri HQ' },
+  ]},
+  { state: 'Assam', cities: [
+    { city: 'Guwahati', lat: 26.1445, lng: 91.7362, area: 'GS Road, Ulubari' },
+    { city: 'Dibrugarh', lat: 27.4728, lng: 94.9120, area: 'AT Road, Chowkidingee' },
+    { city: 'Jorhat', lat: 26.7509, lng: 94.2037, area: 'Gar Ali, Jorhat Town' },
+    { city: 'Silchar', lat: 24.8333, lng: 92.7789, area: 'National Highway 6' },
+    { city: 'Tezpur', lat: 26.6338, lng: 92.8000, area: 'Mission Chariali' },
+    { city: 'Nagaon', lat: 26.3500, lng: 92.6833, area: 'Haibargaon, NH 36' },
+    { city: 'Tinsukia', lat: 27.4889, lng: 95.3556, area: 'Rangagora Road' },
+    { city: 'Bongaigaon', lat: 26.4800, lng: 90.5600, area: 'Chapaguri Road' },
+    { city: 'Dhubri', lat: 26.0193, lng: 89.9796, area: 'Station Road' },
+    { city: 'North Lakhimpur', lat: 27.2361, lng: 94.1000, area: 'Town Centre' },
+  ]},
+  { state: 'Bihar', cities: [
+    { city: 'Patna', lat: 25.6093, lng: 85.1376, area: 'Boring Road, Patna' },
+    { city: 'Gaya', lat: 24.7955, lng: 84.9994, area: 'Station Road' },
+    { city: 'Muzaffarpur', lat: 26.1209, lng: 85.3647, area: 'Club Road' },
+    { city: 'Bhagalpur', lat: 25.2425, lng: 86.9842, area: 'Khalifabagh' },
+    { city: 'Darbhanga', lat: 26.1542, lng: 85.8918, area: 'Laheriasarai' },
+    { city: 'Purnia', lat: 25.7771, lng: 87.4753, area: 'Line Bazaar' },
+    { city: 'Arrah', lat: 25.5563, lng: 84.6635, area: 'Station Road' },
+    { city: 'Begusarai', lat: 25.4182, lng: 86.1272, area: 'NH 28, Town Centre' },
+    { city: 'Katihar', lat: 25.5392, lng: 87.5719, area: 'Station Road' },
+    { city: 'Saharsa', lat: 25.8751, lng: 86.5940, area: 'Main Road' },
+  ]},
+  { state: 'Chhattisgarh', cities: [
+    { city: 'Raipur', lat: 21.2514, lng: 81.6296, area: 'Telibandha, Raipur' },
+    { city: 'Bhilai', lat: 21.2092, lng: 81.3832, area: 'Civic Centre' },
+    { city: 'Bilaspur', lat: 22.0797, lng: 82.1391, area: 'Vyapar Vihar' },
+    { city: 'Korba', lat: 22.3595, lng: 82.7501, area: 'TP Nagar' },
+    { city: 'Durg', lat: 21.1904, lng: 81.2849, area: 'Station Road' },
+    { city: 'Rajnandgaon', lat: 21.0974, lng: 81.0280, area: 'Bus Stand Road' },
+    { city: 'Jagdalpur', lat: 19.0890, lng: 82.0208, area: 'Lal Bagh Road' },
+    { city: 'Ambikapur', lat: 23.1186, lng: 83.1985, area: 'Main Road' },
+    { city: 'Raigarh', lat: 21.8974, lng: 83.3950, area: 'Station Road' },
+    { city: 'Mahasamund', lat: 21.1100, lng: 82.0970, area: 'NH 6' },
+  ]},
+  { state: 'Goa', cities: [
+    { city: 'Panaji', lat: 15.4989, lng: 73.8278, area: 'MG Road, Panaji' },
+    { city: 'Margao', lat: 15.2832, lng: 73.9862, area: 'Grace Church Road' },
+    { city: 'Vasco da Gama', lat: 15.3962, lng: 73.8087, area: 'FL Gomes Road' },
+    { city: 'Mapusa', lat: 15.5922, lng: 73.8089, area: 'Market Road' },
+    { city: 'Ponda', lat: 15.4030, lng: 74.0152, area: 'NH 4A' },
+    { city: 'Calangute', lat: 15.5449, lng: 73.7556, area: 'Calangute Beach Road' },
+    { city: 'Anjuna', lat: 15.5727, lng: 73.7410, area: 'Flea Market Road' },
+    { city: 'Candolim', lat: 15.5171, lng: 73.7627, area: 'Fort Aguada Road' },
+    { city: 'Colva', lat: 15.2797, lng: 73.9219, area: 'Colva Beach Road' },
+    { city: 'Cortalim', lat: 15.3986, lng: 73.9043, area: 'NH 17, Zuarinagar' },
+  ]},
+  { state: 'Gujarat', cities: [
+    { city: 'Ahmedabad', lat: 23.0225, lng: 72.5714, area: 'SG Highway, Bodakdev' },
+    { city: 'Surat', lat: 21.1702, lng: 72.8311, area: 'Ring Road, Adajan' },
+    { city: 'Vadodara', lat: 22.3072, lng: 73.1812, area: 'Race Course Road' },
+    { city: 'Rajkot', lat: 22.3039, lng: 70.8022, area: 'Kalawad Road' },
+    { city: 'Gandhinagar', lat: 23.2156, lng: 72.6369, area: 'Infocity, Sector 7' },
+    { city: 'Bhavnagar', lat: 21.7645, lng: 72.1519, area: 'Waghawadi Road' },
+    { city: 'Junagadh', lat: 21.5222, lng: 70.4579, area: 'Kalwa Chowk' },
+    { city: 'Anand', lat: 22.5645, lng: 72.9289, area: 'V.V. Nagar Road' },
+    { city: 'Mehsana', lat: 23.5880, lng: 72.3693, area: 'Highway Road' },
+    { city: 'Morbi', lat: 22.8120, lng: 70.8370, area: 'Green Chowk' },
+  ]},
+  { state: 'Haryana', cities: [
+    { city: 'Gurugram', lat: 28.4595, lng: 77.0266, area: 'MG Road, DLF Phase 2' },
+    { city: 'Faridabad', lat: 28.4089, lng: 77.3178, area: 'NIT, Faridabad' },
+    { city: 'Chandigarh (HR)', lat: 30.7333, lng: 76.7794, area: 'Sector 17' },
+    { city: 'Panipat', lat: 29.3909, lng: 76.9635, area: 'GT Road' },
+    { city: 'Ambala', lat: 30.3782, lng: 76.7767, area: 'Mall Road, Ambala Cantt' },
+    { city: 'Karnal', lat: 29.6857, lng: 76.9905, area: 'GT Road, Karnal' },
+    { city: 'Hisar', lat: 29.1492, lng: 75.7217, area: 'Delhi Road' },
+    { city: 'Rohtak', lat: 28.8955, lng: 76.6066, area: 'Delhi Road, Model Town' },
+    { city: 'Sonipat', lat: 28.9931, lng: 77.0151, area: 'GT Road' },
+    { city: 'Panchkula', lat: 30.6942, lng: 76.8606, area: 'Sector 5' },
+  ]},
+  { state: 'Himachal Pradesh', cities: [
+    { city: 'Shimla', lat: 31.1048, lng: 77.1734, area: 'Mall Road, Shimla' },
+    { city: 'Manali', lat: 32.2432, lng: 77.1892, area: 'Mall Road, Manali' },
+    { city: 'Dharamshala', lat: 32.2190, lng: 76.3234, area: 'Kotwali Bazaar' },
+    { city: 'Kullu', lat: 31.9579, lng: 77.1095, area: 'Akhara Bazaar' },
+    { city: 'Solan', lat: 30.9045, lng: 77.0967, area: 'Mall Road' },
+    { city: 'Mandi', lat: 31.7088, lng: 76.9318, area: 'Indira Market' },
+    { city: 'Hamirpur', lat: 31.6862, lng: 76.5213, area: 'Bus Stand Road' },
+    { city: 'Una', lat: 31.4685, lng: 76.2690, area: 'NH 21' },
+    { city: 'Bilaspur', lat: 31.3274, lng: 76.7608, area: 'Main Bazaar' },
+    { city: 'Palampur', lat: 32.1108, lng: 76.5364, area: 'Neugal Cafe Road' },
+  ]},
+  { state: 'Jharkhand', cities: [
+    { city: 'Ranchi', lat: 23.3441, lng: 85.3096, area: 'Main Road, Ranchi' },
+    { city: 'Jamshedpur', lat: 22.8046, lng: 86.2029, area: 'Bistupur' },
+    { city: 'Dhanbad', lat: 23.7957, lng: 86.4304, area: 'Bank More' },
+    { city: 'Bokaro', lat: 23.6693, lng: 86.1511, area: 'Sector 4, Bokaro Steel City' },
+    { city: 'Deoghar', lat: 24.4764, lng: 86.6942, area: 'Tower Chowk' },
+    { city: 'Hazaribagh', lat: 23.9966, lng: 85.3619, area: 'Guru Gobind Singh Road' },
+    { city: 'Giridih', lat: 24.1854, lng: 86.3003, area: 'Station Road' },
+    { city: 'Ramgarh', lat: 23.6305, lng: 85.5623, area: 'NH 33' },
+    { city: 'Dumka', lat: 24.2658, lng: 87.2498, area: 'Bhagalpur Road' },
+    { city: 'Chaibasa', lat: 22.5500, lng: 85.8000, area: 'Club Road' },
+  ]},
+  { state: 'Karnataka', cities: [
+    { city: 'Bengaluru', lat: 12.9716, lng: 77.5946, area: 'Koramangala 4th Block' },
+    { city: 'Mysuru', lat: 12.2958, lng: 76.6394, area: 'Sayyaji Rao Road' },
+    { city: 'Mangaluru', lat: 12.9141, lng: 74.8560, area: 'Hampankatta' },
+    { city: 'Hubli', lat: 15.3647, lng: 75.1240, area: 'Lamington Road' },
+    { city: 'Belgaum', lat: 15.8497, lng: 74.4977, area: 'College Road' },
+    { city: 'Gulbarga', lat: 17.3297, lng: 76.8343, area: 'Supermarket' },
+    { city: 'Davangere', lat: 14.4644, lng: 75.9218, area: 'PJ Extension' },
+    { city: 'Shimoga', lat: 13.9299, lng: 75.5681, area: 'Gandhi Bazaar' },
+    { city: 'Udupi', lat: 13.3409, lng: 74.7421, area: 'Car Street' },
+    { city: 'Hassan', lat: 13.0068, lng: 76.1004, area: 'BM Road' },
+  ]},
+  { state: 'Kerala', cities: [
+    { city: 'Kochi', lat: 9.9312, lng: 76.2673, area: 'MG Road, Ernakulam' },
+    { city: 'Thiruvananthapuram', lat: 8.5241, lng: 76.9366, area: 'Vazhuthacaud' },
+    { city: 'Kozhikode', lat: 11.2588, lng: 75.7804, area: 'SM Street' },
+    { city: 'Thrissur', lat: 10.5276, lng: 76.2144, area: 'Round South' },
+    { city: 'Kollam', lat: 8.8932, lng: 76.6141, area: 'Chinnakada' },
+    { city: 'Alappuzha', lat: 9.4981, lng: 76.3388, area: 'KSRTC Bus Stand Road' },
+    { city: 'Palakkad', lat: 10.7867, lng: 76.6548, area: 'Chandranagar' },
+    { city: 'Kannur', lat: 11.8745, lng: 75.3704, area: 'Fort Road' },
+    { city: 'Kottayam', lat: 9.5916, lng: 76.5222, area: 'KK Road' },
+    { city: 'Malappuram', lat: 11.0510, lng: 76.0711, area: 'Down Hill' },
+  ]},
+  { state: 'Madhya Pradesh', cities: [
+    { city: 'Bhopal', lat: 23.2599, lng: 77.4126, area: 'MP Nagar, Zone 1' },
+    { city: 'Indore', lat: 22.7196, lng: 75.8577, area: 'Vijay Nagar' },
+    { city: 'Jabalpur', lat: 23.1815, lng: 79.9864, area: 'Wright Town' },
+    { city: 'Gwalior', lat: 26.2183, lng: 78.1828, area: 'City Centre, Lashkar' },
+    { city: 'Ujjain', lat: 23.1765, lng: 75.7885, area: 'Freeganj' },
+    { city: 'Sagar', lat: 23.8388, lng: 78.7378, area: 'Civil Lines' },
+    { city: 'Dewas', lat: 22.9623, lng: 76.0508, area: 'AB Road' },
+    { city: 'Satna', lat: 24.5805, lng: 80.8322, area: 'Rewa Road' },
+    { city: 'Ratlam', lat: 23.3340, lng: 75.0367, area: 'Station Road' },
+    { city: 'Rewa', lat: 24.5318, lng: 81.3032, area: 'White Tiger Road' },
+  ]},
+  { state: 'Maharashtra', cities: [
+    { city: 'Mumbai', lat: 19.0760, lng: 72.8777, area: 'Bandra West, Hill Road' },
+    { city: 'Nagpur', lat: 21.1458, lng: 79.0882, area: 'Dharampeth, Nagpur' },
+    { city: 'Nashik', lat: 19.9975, lng: 73.7898, area: 'College Road' },
+    { city: 'Aurangabad', lat: 19.8762, lng: 75.3433, area: 'Jalna Road' },
+    { city: 'Solapur', lat: 17.6599, lng: 75.9064, area: 'Railway Lines' },
+    { city: 'Kolhapur', lat: 16.7050, lng: 74.2433, area: 'Rajarampuri' },
+    { city: 'Navi Mumbai', lat: 19.0330, lng: 73.0297, area: 'Vashi, Sector 17' },
+    { city: 'Thane', lat: 19.2183, lng: 72.9781, area: 'Ghodbunder Road' },
+    { city: 'Satara', lat: 17.6805, lng: 74.0183, area: 'Powai Naka' },
+    { city: 'Sangli', lat: 16.8524, lng: 74.5815, area: 'Station Road' },
+  ]},
+  { state: 'Manipur', cities: [
+    { city: 'Imphal', lat: 24.8170, lng: 93.9368, area: 'MG Avenue, Imphal' },
+    { city: 'Thoubal', lat: 24.6349, lng: 94.0084, area: 'Thoubal Bazaar' },
+    { city: 'Bishnupur', lat: 24.6293, lng: 93.7720, area: 'Main Road' },
+    { city: 'Churachandpur', lat: 24.3340, lng: 93.6830, area: 'Hiangtam Lamka' },
+    { city: 'Kakching', lat: 24.4980, lng: 94.0670, area: 'NH 102' },
+    { city: 'Ukhrul', lat: 25.1134, lng: 94.3581, area: 'Main Market' },
+    { city: 'Senapati', lat: 25.2721, lng: 94.0193, area: 'Town Centre' },
+    { city: 'Tamenglong', lat: 25.0833, lng: 93.5000, area: 'Market Road' },
+    { city: 'Moreh', lat: 24.2536, lng: 94.3036, area: 'Indo-Myanmar Border' },
+    { city: 'Kangpokpi', lat: 25.1533, lng: 93.9667, area: 'NH 2, Kangpokpi' },
+  ]},
+  { state: 'Meghalaya', cities: [
+    { city: 'Shillong', lat: 25.5788, lng: 91.8933, area: 'Police Bazaar' },
+    { city: 'Tura', lat: 25.5144, lng: 90.2217, area: 'Hawakhana Road' },
+    { city: 'Jowai', lat: 25.4530, lng: 92.2037, area: 'Main Road' },
+    { city: 'Nongstoin', lat: 25.5170, lng: 91.2650, area: 'Market Road' },
+    { city: 'Williamnagar', lat: 25.5000, lng: 90.6170, area: 'East Garo Hills HQ' },
+    { city: 'Baghmara', lat: 25.2000, lng: 90.6333, area: 'South Garo Hills' },
+    { city: 'Cherrapunjee', lat: 25.2722, lng: 91.7319, area: 'Sohra Market' },
+    { city: 'Mawkyrwat', lat: 25.3500, lng: 91.5667, area: 'South West Khasi Hills' },
+    { city: 'Resubelpara', lat: 25.8867, lng: 90.5333, area: 'North Garo Hills' },
+    { city: 'Mairang', lat: 25.5500, lng: 91.5667, area: 'West Khasi Hills' },
+  ]},
+  { state: 'Mizoram', cities: [
+    { city: 'Aizawl', lat: 23.7271, lng: 92.7176, area: 'Bara Bazaar' },
+    { city: 'Lunglei', lat: 22.8835, lng: 92.7355, area: 'Main Road' },
+    { city: 'Champhai', lat: 23.4567, lng: 93.3281, area: 'Market Road' },
+    { city: 'Serchhip', lat: 23.3072, lng: 92.8405, area: 'Main Street' },
+    { city: 'Kolasib', lat: 24.2235, lng: 92.6789, area: 'Town Centre' },
+    { city: 'Mamit', lat: 23.9256, lng: 92.4820, area: 'West Mizoram' },
+    { city: 'Saiha', lat: 22.4891, lng: 92.9737, area: 'South Mizoram' },
+    { city: 'Lawngtlai', lat: 22.5309, lng: 92.9072, area: 'Market Road' },
+    { city: 'Hnahthial', lat: 22.7400, lng: 92.8100, area: 'NH 54' },
+    { city: 'Khawzawl', lat: 23.3600, lng: 93.1400, area: 'Town Centre' },
+  ]},
+  { state: 'Nagaland', cities: [
+    { city: 'Kohima', lat: 25.6751, lng: 94.1086, area: 'Main Town' },
+    { city: 'Dimapur', lat: 25.9065, lng: 93.7271, area: 'Hong Kong Market' },
+    { city: 'Mokokchung', lat: 26.3222, lng: 94.5220, area: 'Ward 4' },
+    { city: 'Tuensang', lat: 26.2698, lng: 94.8224, area: 'Market Road' },
+    { city: 'Wokha', lat: 26.1000, lng: 94.2667, area: 'Town Centre' },
+    { city: 'Zunheboto', lat: 25.9667, lng: 94.5167, area: 'Main Road' },
+    { city: 'Mon', lat: 26.7500, lng: 94.9333, area: 'Main Bazaar' },
+    { city: 'Phek', lat: 25.6733, lng: 94.4800, area: 'Market Road' },
+    { city: 'Longleng', lat: 26.2650, lng: 94.8750, area: 'NH 702A' },
+    { city: 'Peren', lat: 25.5132, lng: 93.7363, area: 'Town Road' },
+  ]},
+  { state: 'Odisha', cities: [
+    { city: 'Bhubaneswar', lat: 20.2961, lng: 85.8245, area: 'Jaydev Vihar' },
+    { city: 'Cuttack', lat: 20.4625, lng: 85.8830, area: 'Badambadi' },
+    { city: 'Rourkela', lat: 22.2604, lng: 84.8536, area: 'Civil Township' },
+    { city: 'Berhampur', lat: 19.3150, lng: 84.7941, area: 'Giri Road' },
+    { city: 'Sambalpur', lat: 21.4669, lng: 83.9812, area: 'Khetrajpur' },
+    { city: 'Puri', lat: 19.7983, lng: 85.8245, area: 'Grand Road' },
+    { city: 'Balasore', lat: 21.4934, lng: 86.9337, area: 'Station Road' },
+    { city: 'Bhadrak', lat: 21.0549, lng: 86.4959, area: 'NH 16' },
+    { city: 'Baripada', lat: 21.9414, lng: 86.7206, area: 'Bhanjpur' },
+    { city: 'Jharsuguda', lat: 21.8554, lng: 84.0065, area: 'Power City Road' },
+  ]},
+  { state: 'Punjab', cities: [
+    { city: 'Chandigarh (PB)', lat: 30.7333, lng: 76.7794, area: 'Sector 35' },
+    { city: 'Ludhiana', lat: 30.9009, lng: 75.8573, area: 'Ferozepur Road' },
+    { city: 'Amritsar', lat: 31.6340, lng: 74.8723, area: 'Lawrence Road' },
+    { city: 'Jalandhar', lat: 31.3260, lng: 75.5762, area: 'Model Town' },
+    { city: 'Patiala', lat: 30.3398, lng: 76.3869, area: 'Mall Road' },
+    { city: 'Bathinda', lat: 30.2110, lng: 74.9455, area: 'Mall Road' },
+    { city: 'Mohali', lat: 30.7046, lng: 76.7179, area: 'Phase 5, Mohali' },
+    { city: 'Hoshiarpur', lat: 31.5143, lng: 75.9115, area: 'Sutheri Road' },
+    { city: 'Pathankot', lat: 32.2643, lng: 75.6421, area: 'Railway Road' },
+    { city: 'Moga', lat: 30.8162, lng: 75.1741, area: 'GT Road' },
+  ]},
+  { state: 'Rajasthan', cities: [
+    { city: 'Jaipur', lat: 26.9124, lng: 75.7873, area: 'MI Road, C Scheme' },
+    { city: 'Jodhpur', lat: 26.2389, lng: 73.0243, area: 'Station Road' },
+    { city: 'Udaipur', lat: 24.5854, lng: 73.7125, area: 'Sukhadia Circle' },
+    { city: 'Kota', lat: 25.2138, lng: 75.8648, area: 'Gumanpura' },
+    { city: 'Ajmer', lat: 26.4499, lng: 74.6399, area: 'Madar Gate' },
+    { city: 'Bikaner', lat: 28.0229, lng: 73.3119, area: 'KEM Road' },
+    { city: 'Alwar', lat: 27.5530, lng: 76.6346, area: 'Hope Circus' },
+    { city: 'Bhilwara', lat: 25.3407, lng: 74.6313, area: 'Azad Nagar' },
+    { city: 'Sikar', lat: 27.6094, lng: 75.1399, area: 'Station Road' },
+    { city: 'Sri Ganganagar', lat: 29.9094, lng: 73.8790, area: 'Purani Abadi' },
+  ]},
+  { state: 'Sikkim', cities: [
+    { city: 'Gangtok', lat: 27.3389, lng: 88.6065, area: 'MG Marg' },
+    { city: 'Namchi', lat: 27.1680, lng: 88.3605, area: 'Central Park Road' },
+    { city: 'Gyalshing', lat: 27.2930, lng: 88.2570, area: 'Main Market' },
+    { city: 'Mangan', lat: 27.5080, lng: 88.5280, area: 'Town Centre' },
+    { city: 'Ravangla', lat: 27.3090, lng: 88.3620, area: 'Buddha Park Road' },
+    { city: 'Pelling', lat: 27.2983, lng: 88.2383, area: 'Upper Pelling' },
+    { city: 'Jorethang', lat: 27.0842, lng: 88.3239, area: 'NH 10' },
+    { city: 'Singtam', lat: 27.2353, lng: 88.5050, area: 'Main Bazaar' },
+    { city: 'Rangpo', lat: 27.1764, lng: 88.5317, area: 'NH 10, Border Check' },
+    { city: 'Lachung', lat: 27.6950, lng: 88.7469, area: 'Lachung Market' },
+  ]},
+  { state: 'Tamil Nadu', cities: [
+    { city: 'Chennai', lat: 13.0827, lng: 80.2707, area: 'Anna Nagar, Chennai' },
+    { city: 'Coimbatore', lat: 11.0168, lng: 76.9558, area: 'RS Puram' },
+    { city: 'Madurai', lat: 9.9252, lng: 78.1198, area: 'KK Nagar' },
+    { city: 'Tiruchirappalli', lat: 10.7905, lng: 78.7047, area: 'Cantonment' },
+    { city: 'Salem', lat: 11.6643, lng: 78.1460, area: 'Junction Road' },
+    { city: 'Tirunelveli', lat: 8.7139, lng: 77.7567, area: 'High Ground' },
+    { city: 'Erode', lat: 11.3410, lng: 77.7172, area: 'EVN Road' },
+    { city: 'Vellore', lat: 12.9165, lng: 79.1325, area: 'Officers Line' },
+    { city: 'Thanjavur', lat: 10.7870, lng: 79.1378, area: 'Medical College Road' },
+    { city: 'Tiruppur', lat: 11.1085, lng: 77.3411, area: 'Kumaran Road' },
+  ]},
+  { state: 'Telangana', cities: [
+    { city: 'Hyderabad', lat: 17.3850, lng: 78.4867, area: 'HITEC City, Madhapur' },
+    { city: 'Warangal', lat: 17.9784, lng: 79.5941, area: 'Hanamkonda' },
+    { city: 'Nizamabad', lat: 18.6725, lng: 78.0941, area: 'Station Road' },
+    { city: 'Karimnagar', lat: 18.4386, lng: 79.1288, area: 'Mankammathota' },
+    { city: 'Khammam', lat: 17.2473, lng: 80.1514, area: 'Wyra Road' },
+    { city: 'Mahbubnagar', lat: 16.7488, lng: 77.9858, area: 'Town Centre' },
+    { city: 'Nalgonda', lat: 17.0583, lng: 79.2671, area: 'Bus Stand Road' },
+    { city: 'Adilabad', lat: 19.6641, lng: 78.5320, area: 'Mahatma Gandhi Road' },
+    { city: 'Siddipet', lat: 18.1019, lng: 78.8520, area: 'Collectorate Road' },
+    { city: 'Suryapet', lat: 17.1421, lng: 79.6219, area: 'NH 65' },
+  ]},
+  { state: 'Tripura', cities: [
+    { city: 'Agartala', lat: 23.8315, lng: 91.2868, area: 'MG Bazaar' },
+    { city: 'Dharmanagar', lat: 24.3786, lng: 92.1663, area: 'Main Road' },
+    { city: 'Udaipur', lat: 23.5333, lng: 91.4833, area: 'Town Centre' },
+    { city: 'Kailashahar', lat: 24.3307, lng: 92.0066, area: 'NH 8' },
+    { city: 'Bishramganj', lat: 23.6167, lng: 91.4333, area: 'Railway Road' },
+    { city: 'Ambassa', lat: 23.9254, lng: 91.8523, area: 'NH 44' },
+    { city: 'Belonia', lat: 23.2513, lng: 91.4601, area: 'South Tripura' },
+    { city: 'Khowai', lat: 24.0667, lng: 91.6000, area: 'Town Centre' },
+    { city: 'Sonamura', lat: 23.7000, lng: 91.3167, area: 'Sipahijala' },
+    { city: 'Kamalpur', lat: 24.2000, lng: 91.8167, area: 'Dhalai District' },
+  ]},
+  { state: 'Uttar Pradesh', cities: [
+    { city: 'Lucknow', lat: 26.8467, lng: 80.9462, area: 'Hazratganj' },
+    { city: 'Noida', lat: 28.5355, lng: 77.3910, area: 'Sector 18' },
+    { city: 'Agra', lat: 27.1767, lng: 78.0081, area: 'Fatehabad Road' },
+    { city: 'Varanasi', lat: 25.3176, lng: 82.9739, area: 'Sigra' },
+    { city: 'Kanpur', lat: 26.4499, lng: 80.3319, area: 'The Mall Road' },
+    { city: 'Prayagraj', lat: 25.4358, lng: 81.8463, area: 'Civil Lines' },
+    { city: 'Ghaziabad', lat: 28.6692, lng: 77.4538, area: 'Raj Nagar Extension' },
+    { city: 'Meerut', lat: 28.9845, lng: 77.7064, area: 'Western Road' },
+    { city: 'Aligarh', lat: 27.8974, lng: 78.0880, area: 'Ramghat Road' },
+    { city: 'Bareilly', lat: 28.3670, lng: 79.4304, area: 'Civil Lines' },
+  ]},
+  { state: 'Uttarakhand', cities: [
+    { city: 'Dehradun', lat: 30.3165, lng: 78.0322, area: 'Rajpur Road' },
+    { city: 'Haridwar', lat: 29.9457, lng: 78.1642, area: 'Railway Road' },
+    { city: 'Rishikesh', lat: 30.0869, lng: 78.2676, area: 'Tapovan' },
+    { city: 'Nainital', lat: 29.3803, lng: 79.4636, area: 'Mall Road, Tallital' },
+    { city: 'Haldwani', lat: 29.2183, lng: 79.5130, area: 'Banbhoolpura' },
+    { city: 'Roorkee', lat: 29.8543, lng: 77.8880, area: 'Civil Lines' },
+    { city: 'Kashipur', lat: 29.2104, lng: 78.9610, area: 'Ramnagar Road' },
+    { city: 'Rudrapur', lat: 28.9740, lng: 79.3999, area: 'NH 87' },
+    { city: 'Mussoorie', lat: 30.4598, lng: 78.0644, area: 'Mall Road' },
+    { city: 'Almora', lat: 29.5971, lng: 79.6591, area: 'Lala Bazaar' },
+  ]},
+  { state: 'West Bengal', cities: [
+    { city: 'Kolkata', lat: 22.5726, lng: 88.3639, area: 'Park Street' },
+    { city: 'Siliguri', lat: 26.7271, lng: 88.3953, area: 'Hill Cart Road' },
+    { city: 'Durgapur', lat: 23.5204, lng: 87.3119, area: 'City Centre' },
+    { city: 'Asansol', lat: 23.6889, lng: 86.9661, area: 'Burnpur Road' },
+    { city: 'Howrah', lat: 22.5958, lng: 88.2636, area: 'Shibpur, GT Road' },
+    { city: 'Darjeeling', lat: 27.0410, lng: 88.2663, area: 'Chowrasta Mall' },
+    { city: 'Kharagpur', lat: 22.3460, lng: 87.3236, area: 'Station Road' },
+    { city: 'Haldia', lat: 22.0667, lng: 88.0698, area: 'Township Area' },
+    { city: 'Malda', lat: 25.0095, lng: 88.1411, area: 'NH 34' },
+    { city: 'Burdwan', lat: 23.2324, lng: 87.8615, area: 'GT Road' },
+  ]},
+  // Union Territories
+  { state: 'Delhi', cities: [
+    { city: 'New Delhi', lat: 28.6139, lng: 77.2090, area: 'Connaught Place' },
+    { city: 'South Delhi', lat: 28.5244, lng: 77.2066, area: 'Saket, District Centre' },
+    { city: 'Dwarka', lat: 28.5921, lng: 77.0460, area: 'Sector 12, Dwarka' },
+    { city: 'Rohini', lat: 28.7495, lng: 77.0565, area: 'Sector 7, Rohini' },
+    { city: 'Lajpat Nagar', lat: 28.5688, lng: 77.2432, area: 'Central Market' },
+    { city: 'Karol Bagh', lat: 28.6519, lng: 77.1906, area: 'Ajmal Khan Road' },
+    { city: 'Janakpuri', lat: 28.6219, lng: 77.0813, area: 'District Centre' },
+    { city: 'Vasant Kunj', lat: 28.5188, lng: 77.1547, area: 'DDA Flats' },
+    { city: 'Nehru Place', lat: 28.5491, lng: 77.2533, area: 'Nehru Place Market' },
+    { city: 'Pitampura', lat: 28.6969, lng: 77.1316, area: 'Kohat Enclave' },
+  ]},
+  { state: 'Chandigarh', cities: [
+    { city: 'Sector 17', lat: 30.7420, lng: 76.7840, area: 'Sector 17, Plaza' },
+    { city: 'Sector 22', lat: 30.7281, lng: 76.7774, area: 'Sector 22, Main Market' },
+    { city: 'Sector 35', lat: 30.7231, lng: 76.7629, area: 'Sector 35, Market' },
+    { city: 'IT Park', lat: 30.7227, lng: 76.8067, area: 'Rajiv Gandhi IT Park' },
+    { city: 'Manimajra', lat: 30.7270, lng: 76.8195, area: 'Old Chandigarh' },
+    { city: 'Sector 43', lat: 30.7310, lng: 76.7610, area: 'ISBT Area' },
+    { city: 'Sector 8', lat: 30.7562, lng: 76.8010, area: 'Jan Marg' },
+    { city: 'Sector 26', lat: 30.7310, lng: 76.7740, area: 'Grain Market' },
+    { city: 'Sector 44', lat: 30.7270, lng: 76.7570, area: 'PEC Campus Area' },
+    { city: 'Sector 15', lat: 30.7470, lng: 76.7650, area: 'Panjab University Area' },
+  ]},
+];
+
+const CHARGER_TEMPLATES = [
+  { power_kw: 7.2, type: 'AC Wallbox', rate: 8.5, fee: 30, score: 0.93, name_suffix: 'Home EV Point' },
+  { power_kw: 7.4, type: 'AC Wallbox', rate: 9.0, fee: 35, score: 0.94, name_suffix: 'Green Charge Hub' },
+  { power_kw: 11, type: 'AC Wallbox', rate: 9.5, fee: 35, score: 0.96, name_suffix: 'FastPoint AC' },
+  { power_kw: 7.2, type: 'AC Wallbox', rate: 8.0, fee: 25, score: 0.92, name_suffix: 'Community Wallbox' },
+  { power_kw: 22, type: 'AC Wallbox', rate: 11.0, fee: 45, score: 0.98, name_suffix: 'Rapid AC Station' },
+  { power_kw: 7.4, type: 'AC Wallbox', rate: 9.2, fee: 30, score: 0.93, name_suffix: 'Eco Charger' },
+  { power_kw: 11, type: 'AC Wallbox', rate: 10.0, fee: 40, score: 0.95, name_suffix: 'Premium Point' },
+  { power_kw: 7.2, type: 'AC Wallbox', rate: 8.5, fee: 30, score: 0.91, name_suffix: 'Driveway Charger' },
+  { power_kw: 7.4, type: 'AC Wallbox', rate: 9.0, fee: 35, score: 0.94, name_suffix: 'Smart AC' },
+  { power_kw: 11, type: 'AC Wallbox', rate: 9.5, fee: 35, score: 0.97, name_suffix: 'Express Charger' },
+];
+
+const IMAGES = [
+  'https://images.unsplash.com/photo-1558441719-8b449c6ff67c?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1593941707882-a5bba14938c7?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1647427017067-8f33ccbae493?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=800&q=80',
+];
+
+async function seedAllChargers() {
+  let totalInserted = 0;
+  let totalSkipped = 0;
+
+  for (const stateData of INDIAN_STATES) {
+    const rows = stateData.cities.map((city, idx) => {
+      const template = CHARGER_TEMPLATES[idx % CHARGER_TEMPLATES.length];
+      // Small random offset so chargers don't sit exactly on the same spot
+      const latOffset = (Math.random() - 0.5) * 0.008;
+      const lngOffset = (Math.random() - 0.5) * 0.008;
+
+      return {
+        owner_id: OWNER_ID,
+        title: `${city.city} ${template.name_suffix}`,
+        description: `Verified ${template.power_kw} kW Type 2 AC community charger in ${city.area}, ${city.city}. Secure residential location with 24x7 CCTV, covered parking bay, and easy access.`,
+        latitude: Number((city.lat + latOffset).toFixed(6)),
+        longitude: Number((city.lng + lngOffset).toFixed(6)),
+        address: city.area,
+        city: city.city,
+        state: stateData.state,
+        charger_type: template.type,
+        power_kw: template.power_kw,
+        connector_type: 'Type 2',
+        electricity_rate: template.rate,
+        host_fee: template.fee,
+        platform_fee: 12,
+        availability_start: '19:00:00',
+        availability_end: '08:00:00',
+        image_urls: [IMAGES[idx % IMAGES.length], IMAGES[(idx + 1) % IMAGES.length]],
+        verification_status: 'ACTIVE',
+        verification_score: template.score,
+        verification_reason: `AI hardware verification confirmed ${template.power_kw} kW Type 2 wallbox with safety isolator`,
+        rating: Number((4.5 + Math.random() * 0.5).toFixed(1)),
+        review_count: Math.floor(5 + Math.random() * 40),
+      };
+    });
+
+    const { data, error } = await sb.from('chargers').insert(rows).select('id, title, city, state');
+    if (error) {
+      console.error(`❌ Error inserting ${stateData.state}:`, error.message);
+      totalSkipped += rows.length;
+    } else {
+      console.log(`✅ ${stateData.state}: ${data.length} chargers inserted`);
+      totalInserted += data.length;
+    }
+  }
+
+  console.log(`\n🎉 Done! Inserted ${totalInserted} chargers, skipped ${totalSkipped}`);
+
+  // Verify total
+  const { count } = await sb.from('chargers').select('*', { count: 'exact', head: true });
+  console.log(`📊 Total chargers in database: ${count}`);
+}
+
+seedAllChargers();
