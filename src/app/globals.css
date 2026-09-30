@@ -2,62 +2,95 @@
 @import "leaflet/dist/leaflet.css";
 
 :root {
-  --background: #f4fbf4;
-  --foreground: #161d19;
-  --surface: #f4fbf4;
-  --surface-dim: #d4dcd5;
-  --surface-bright: #f4fbf4;
-  --surface-container-lowest: #ffffff;
-  --surface-container-low: #eef6ee;
-  --surface-container: #e8f0e9;
-  --surface-container-high: #e3eae3;
-  --surface-container-highest: #dde4dd;
-  --on-surface: #161d19;
-  --on-surface-variant: #3c4a42;
-  --inverse-surface: #2b322d;
-  --inverse-on-surface: #ebf3eb;
-  --outline: #6c7a71;
-  --outline-variant: #bbcabf;
-  --primary: #006c49;
-  --on-primary: #ffffff;
-  --primary-container: #10b981;
-  --on-primary-container: #00422b;
-  --inverse-primary: #4edea3;
-  --secondary: #006c4a;
-  --on-secondary: #ffffff;
-  --secondary-container: #82f5c1;
-  --on-secondary-container: #00714e;
-  --tertiary: #a43a3a;
-  --error: #ba1a1a;
-  --error-container: #ffdad6;
-  --on-error-container: #93000a;
-  --radius: 0.75rem;
+  --background: #060911;
+  --foreground: #f8fafc;
+  --surface: #0b1120;
+  --surface-muted: #111827;
+  --surface-card: #0e1626;
+  --surface-border: #1e293b;
+  --primary: #10b981;
+  --primary-glow: rgba(16, 185, 129, 0.35);
+  --secondary: #06b6d4;
+  --accent: #34d399;
+  --radius: 1rem;
 }
 
 body {
-  background-color: var(--background);
-  color: var(--foreground);
+  background-color: #060911;
+  color: #f8fafc;
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  background-image: 
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(16, 185, 129, 0.12), transparent),
+    radial-gradient(ellipse 60% 40% at 80% 60%, rgba(6, 182, 212, 0.06), transparent);
+  background-attachment: fixed;
 }
 
-/* Custom Leaflet Map styling for light mobility theme */
+/* Glassmorphism & Elevation utilities */
+.glass-panel {
+  background: rgba(15, 23, 42, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(51, 65, 85, 0.6);
+}
+
+.glass-card {
+  background: rgba(14, 22, 38, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(30, 41, 59, 0.9);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card:hover {
+  border-color: rgba(16, 185, 129, 0.35);
+  box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.6), 0 0 20px -5px rgba(16, 185, 129, 0.15);
+  transform: translateY(-2px);
+}
+
+.glow-emerald {
+  box-shadow: 0 0 25px -4px rgba(16, 185, 129, 0.4);
+}
+
+.glow-cyan {
+  box-shadow: 0 0 25px -4px rgba(6, 182, 212, 0.4);
+}
+
+.text-gradient-emerald {
+  background: linear-gradient(135deg, #ffffff 20%, #6ee7b7 70%, #10b981 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-cyan {
+  background: linear-gradient(135deg, #a5f3fc 0%, #38bdf8 50%, #06b6d4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Custom Leaflet Map styling for high-tech dark theme */
 .leaflet-container {
   width: 100%;
   height: 100%;
-  background-color: #e8f0e9 !important;
+  background-color: #0b1120 !important;
   font-family: inherit;
   border-radius: inherit;
   z-index: 10;
 }
 
+/* Dark mode filter for standard OSM tiles */
+.dark-tiles .leaflet-tile-pane {
+  filter: brightness(0.68) invert(1) contrast(3.2) hue-rotate(200deg) saturate(0.35);
+}
+
 .leaflet-popup-content-wrapper {
-  background-color: #ffffff !important;
-  color: #161d19 !important;
-  border: 1px solid #dde4dd;
-  border-radius: 14px !important;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05) !important;
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+  border: 1px solid #334155;
+  border-radius: 16px !important;
+  box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.7), 0 0 25px -5px rgba(16, 185, 129, 0.2) !important;
   padding: 0 !important;
   overflow: hidden;
 }
@@ -68,45 +101,64 @@ body {
 }
 
 .leaflet-popup-tip {
-  background-color: #ffffff !important;
-  border: 1px solid #dde4dd;
+  background-color: #0f172a !important;
+  border: 1px solid #334155;
 }
 
 /* Custom Marker styling */
 .charger-pin-green {
-  background: #006c49;
+  background: #10b981;
   border: 2px solid #ffffff;
-  box-shadow: 0 2px 8px rgba(0, 108, 73, 0.4);
+  box-shadow: 0 0 14px rgba(16, 185, 129, 0.8);
 }
 
 .charger-pin-yellow {
-  background: #d97706;
+  background: #f59e0b;
   border: 2px solid #ffffff;
-  box-shadow: 0 2px 8px rgba(217, 119, 6, 0.4);
+  box-shadow: 0 0 14px rgba(245, 158, 11, 0.8);
 }
 
 .charger-pin-red {
-  background: #ba1a1a;
+  background: #f43f5e;
   border: 2px solid #ffffff;
-  box-shadow: 0 2px 8px rgba(186, 26, 26, 0.4);
+  box-shadow: 0 0 14px rgba(244, 63, 94, 0.8);
 }
 
 /* Elevation utilities */
 .card-elevation {
-  background-color: #ffffff;
-  border: 1px solid #dde4dd;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+  background-color: #0f172a;
+  border: 1px solid #1e293b;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
 }
 
 .card-elevation-high {
-  background-color: #ffffff;
-  border: 1px solid #dde4dd;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+  background-color: #0f172a;
+  border: 1px solid #334155;
+  box-shadow: 0 14px 35px -5px rgba(0, 0, 0, 0.6);
 }
 
-/* Mobile bottom nav safe area (for iPhones with home indicator) */
+/* Mobile bottom nav safe area */
 .safe-area-bottom {
   padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Custom modern scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #090d16;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
 }
 
 /* Hide footer on mobile when bottom nav is visible */

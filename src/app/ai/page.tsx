@@ -359,31 +359,31 @@ function AIChargePilotContent() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#f4fbf4] text-[#161d19] pt-20 pb-20">
+    <div className="min-h-screen bg-[#070b14] text-slate-100 pt-24 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         {/* Top Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
           <div>
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#eef6ee] border border-[#dde4dd] text-[#006c49] text-xs font-bold uppercase tracking-wider mb-2">
-              <Sparkles className="w-3.5 h-3.5 text-[#006c49]" />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-xs font-bold uppercase tracking-wider mb-2">
+              <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
               <span>AI-Powered Trip Planning</span>
             </div>
-            <h1 className="text-3xl sm:text-5xl font-black text-[#161d19] tracking-tight">
+            <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
               AI Trip Planner
             </h1>
-            <p className="text-sm text-[#3c4a42] mt-1 max-w-2xl">
+            <p className="text-sm text-slate-400 mt-1 max-w-2xl">
               Plan your charging stops, estimate costs, and find the best community chargers along your route — all tailored to your EV.
             </p>
           </div>
 
           {/* Tab Switcher */}
-          <div className="flex items-center gap-1.5 bg-white border border-[#dde4dd] p-1.5 rounded-2xl shadow-sm shrink-0">
+          <div className="flex items-center gap-1.5 bg-slate-900/90 border border-slate-800 p-1.5 rounded-2xl shadow-sm shrink-0">
             <button
               onClick={() => setActiveTab("chargepilot")}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition ${
                 activeTab === "chargepilot"
-                  ? "bg-[#006c49] text-white shadow-sm"
-                  : "text-[#3c4a42] hover:text-[#161d19] hover:bg-[#eef6ee]"
+                  ? "bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 shadow-sm"
+                  : "text-slate-400 hover:text-white hover:bg-slate-800"
               }`}
             >
               <Sparkles className="w-4 h-4" />
@@ -394,11 +394,11 @@ function AIChargePilotContent() {
               onClick={() => setActiveTab("emergency")}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition ${
                 activeTab === "emergency"
-                  ? "bg-[#ba1a1a] text-white shadow-sm"
-                  : "text-[#ba1a1a] hover:bg-[#ffdad6]"
+                  ? "bg-rose-500 text-white shadow-sm"
+                  : "text-rose-400 hover:bg-rose-500/10"
               }`}
             >
-              <AlertTriangle className="w-4 h-4 text-[#ba1a1a]" />
+              <AlertTriangle className="w-4 h-4 text-rose-400" />
               <span>🚨 Emergency SOS</span>
             </button>
 
@@ -406,8 +406,8 @@ function AIChargePilotContent() {
               onClick={() => setActiveTab("chat")}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition ${
                 activeTab === "chat"
-                  ? "bg-[#006c49] text-white shadow-sm"
-                  : "text-[#3c4a42] hover:text-[#161d19] hover:bg-[#eef6ee]"
+                  ? "bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 shadow-sm"
+                  : "text-slate-400 hover:text-white hover:bg-slate-800"
               }`}
             >
               <HelpCircle className="w-4 h-4" />

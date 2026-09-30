@@ -26,10 +26,10 @@ import {
 const ChargerMap = dynamic(() => import("@/components/map/ChargerMap"), {
   ssr: false,
   loading: () => (
-    <div className="w-full h-full min-h-[500px] flex items-center justify-center bg-[#eef6ee] border border-[#dde4dd] rounded-2xl">
+    <div className="w-full h-full min-h-[500px] flex items-center justify-center bg-slate-900 border border-slate-800 rounded-2xl">
       <div className="flex flex-col items-center gap-3">
-        <div className="w-8 h-8 border-3 border-[#006c49] border-t-transparent rounded-full animate-spin" />
-        <span className="text-xs text-[#3c4a42] font-medium">Loading Community Charger Map...</span>
+        <div className="w-8 h-8 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin" />
+        <span className="text-xs text-slate-400 font-medium">Loading Community Charger Map...</span>
       </div>
     </div>
   ),
@@ -154,6 +154,7 @@ export default function ExplorePage() {
         ...c,
         distanceKm: calculateDistanceKm(userLocation.lat, userLocation.lng, c.latitude, c.longitude),
       }));
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       result.sort((a, b) => ((a as any).distanceKm ?? Infinity) - ((b as any).distanceKm ?? Infinity));
     }
 
@@ -266,18 +267,18 @@ export default function ExplorePage() {
   };
 
   return (
-    <div className="flex-1 flex flex-col h-[calc(100vh-64px)] pt-16 overflow-hidden bg-[#f4fbf4]">
+    <div className="flex-1 flex flex-col h-[calc(100vh-64px)] pt-16 overflow-hidden bg-[#070b14] text-slate-100">
       {/* Top Search & Filter Bar */}
-      <div className="border-b border-[#dde4dd] bg-[#ffffff]/90 backdrop-blur-md px-4 py-3 shrink-0 z-30 shadow-sm">
+      <div className="border-b border-slate-800 bg-[#090e1a]/95 backdrop-blur-md px-4 py-3 shrink-0 z-30 shadow-md">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-3">
           {/* Natural Search Input with Current Location Action */}
           <div className="flex items-center gap-2 flex-1 w-full">
             <div className="relative flex-1 w-full">
-              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#3c4a42]">
+              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
                 {isAiNaturalSearching ? (
-                  <div className="w-4 h-4 border-2 border-[#006c49] border-t-transparent rounded-full animate-spin" />
+                  <div className="w-4 h-4 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin" />
                 ) : (
-                  <Sparkles className="w-4 h-4 text-[#006c49]" />
+                  <Sparkles className="w-4 h-4 text-emerald-400" />
                 )}
               </div>
               <input
@@ -288,11 +289,11 @@ export default function ExplorePage() {
                   if (e.key === "Enter") handleNaturalSearch(searchQuery);
                 }}
                 placeholder='Try AI search: "Find me a 7 kW charger near Satara available tonight under ₹250"'
-                className="w-full pl-10 pr-24 py-2.5 rounded-xl bg-[#eef6ee] border border-[#dde4dd] focus:border-[#006c49] focus:ring-1 focus:ring-[#006c49] text-xs sm:text-sm text-[#161d19] placeholder-[#3c4a42]/70 transition"
+                className="w-full pl-10 pr-24 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-xs sm:text-sm text-white placeholder-slate-500 transition shadow-inner"
               />
               <button
                 onClick={() => handleNaturalSearch(searchQuery)}
-                className="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg bg-[#006c49] hover:bg-[#005236] text-white text-xs font-bold transition flex items-center gap-1 shadow-sm"
+                className="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 text-xs font-bold transition flex items-center gap-1 shadow-sm"
               >
                 <span>Search</span>
               </button>
@@ -305,8 +306,8 @@ export default function ExplorePage() {
               title={userLocation ? "Click to disable location filter" : "Find community chargers near my location"}
               className={`px-3 py-2.5 rounded-xl border text-xs font-bold transition flex items-center gap-1.5 shrink-0 shadow-sm ${
                 userLocation
-                  ? "bg-[#006c49] text-white border-[#005236]"
-                  : "bg-white text-[#161d19] border-[#dde4dd] hover:bg-[#eef6ee] hover:text-[#006c49]"
+                  ? "bg-emerald-500 text-slate-950 border-emerald-400 shadow-md shadow-emerald-500/20"
+                  : "bg-slate-800/80 text-slate-200 border-slate-700 hover:bg-slate-700 hover:text-white"
               }`}
             >
               <Navigation className={`w-3.5 h-3.5 ${isLocating ? "animate-spin" : userLocation ? "rotate-45" : ""}`} />
@@ -316,7 +317,7 @@ export default function ExplorePage() {
 
           {/* Quick AI Chips */}
           <div className="flex items-center gap-1.5 overflow-x-auto w-full md:w-auto pb-1 md:pb-0 text-xs shrink-0">
-            <span className="text-[11px] text-[#3c4a42] font-semibold whitespace-nowrap">
+            <span className="text-[11px] text-slate-400 font-semibold whitespace-nowrap">
               Try:
             </span>
             <button
@@ -325,7 +326,7 @@ export default function ExplorePage() {
                 setSearchQuery(q);
                 handleNaturalSearch(q);
               }}
-              className="px-2.5 py-1 rounded-lg bg-[#e8f0e9] hover:bg-[#dde4dd] text-[#006c49] border border-[#bbcabf]/50 whitespace-nowrap font-medium"
+              className="px-2.5 py-1 rounded-lg bg-slate-800/60 hover:bg-slate-800 text-emerald-400 border border-emerald-500/20 whitespace-nowrap font-medium transition"
             >
               Satara 7 kW tonight
             </button>
@@ -335,73 +336,42 @@ export default function ExplorePage() {
                 setSearchQuery(q);
                 handleNaturalSearch(q);
               }}
-              className="px-2.5 py-1 rounded-lg bg-[#e8f0e9] hover:bg-[#dde4dd] text-[#006c49] border border-[#bbcabf]/50 whitespace-nowrap font-medium"
+              className="px-2.5 py-1 rounded-lg bg-slate-800/60 hover:bg-slate-800 text-emerald-400 border border-emerald-500/20 whitespace-nowrap font-medium transition"
             >
               Pune 11 kW
-            </button>
-            <button
-              onClick={() => {
-                const q = "Kolhapur available tonight";
-                setSearchQuery(q);
-                handleNaturalSearch(q);
-              }}
-              className="px-2.5 py-1 rounded-lg bg-[#e8f0e9] hover:bg-[#dde4dd] text-[#161d19] border border-[#bbcabf]/50 whitespace-nowrap font-medium"
-            >
-              Kolhapur tonight
-            </button>
-          </div>
-
-          {/* Mobile View Toggle */}
-          <div className="flex md:hidden w-full gap-2 pt-1">
-            <button
-              onClick={() => setMobileView("map")}
-              className={`flex-1 py-1.5 rounded-lg text-xs font-bold transition ${
-                mobileView === "map"
-                  ? "bg-[#006c49] text-white"
-                  : "bg-[#e8f0e9] text-[#161d19]"
-              }`}
-            >
-              Map View
-            </button>
-            <button
-              onClick={() => setMobileView("list")}
-              className={`flex-1 py-1.5 rounded-lg text-xs font-bold transition ${
-                mobileView === "list"
-                  ? "bg-[#006c49] text-white"
-                  : "bg-[#e8f0e9] text-[#161d19]"
-              }`}
-            >
-              Chargers ({filteredChargers.length})
             </button>
           </div>
         </div>
 
-        {/* Natural Search Applied Alert */}
+        {/* Natural Search Result Pill */}
         {naturalSearchNotice && (
-          <div className="max-w-7xl mx-auto mt-2 px-3 py-1.5 rounded-lg bg-[#eef6ee] border border-[#10b981]/40 flex items-center justify-between text-xs text-[#006c49]">
-            <span className="flex items-center gap-1.5 font-medium">
-              <Sparkles className="w-3.5 h-3.5 text-[#10b981]" />
-              {naturalSearchNotice}
+          <div className="max-w-7xl mx-auto mt-2 flex items-center justify-between bg-emerald-500/10 border border-emerald-500/30 px-3 py-1.5 rounded-xl text-xs text-emerald-300">
+            <span className="flex items-center gap-2">
+              <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+              <span>{naturalSearchNotice}</span>
             </span>
             <button
-              onClick={resetFilters}
-              className="text-[#3c4a42] hover:text-[#161d19] underline text-[11px]"
+              onClick={() => {
+                setNaturalSearchNotice(null);
+                setFilteredChargers(allChargers);
+              }}
+              className="text-emerald-400 hover:text-white font-bold text-[11px] underline"
             >
-              Clear
+              Reset Search
             </button>
           </div>
         )}
 
-        {/* Current Location Filter Badge */}
+        {/* User Location Active Pill */}
         {userLocation && (
-          <div className="max-w-7xl mx-auto mt-2 px-3 py-1.5 rounded-lg bg-[#eef6ee] border border-[#006c49]/30 flex items-center justify-between text-xs text-[#006c49]">
-            <span className="flex items-center gap-1.5 font-semibold">
-              <Navigation className="w-3.5 h-3.5 text-[#006c49]" />
+          <div className="max-w-7xl mx-auto mt-2 flex items-center justify-between bg-cyan-500/10 border border-cyan-500/30 px-3 py-1 rounded-xl text-xs text-cyan-300">
+            <span className="flex items-center gap-2">
+              <MapPin className="w-3.5 h-3.5 text-cyan-400" />
               <span>Showing chargers sorted by distance from your current location</span>
             </span>
             <button
               onClick={() => setUserLocation(null)}
-              className="text-[#3c4a42] hover:text-[#161d19] font-medium text-[11px] underline"
+              className="text-cyan-400 hover:text-white font-medium text-[11px] underline"
             >
               Clear Location
             </button>
@@ -413,20 +383,20 @@ export default function ExplorePage() {
       <div className="flex-1 flex overflow-hidden relative">
         {/* Left Side: Filter Controls & Charger Cards List */}
         <aside
-          className={`w-full md:w-[460px] lg:w-[490px] shrink-0 border-r border-[#dde4dd] bg-[#f4fbf4] flex flex-col z-20 transition-all ${
+          className={`w-full md:w-[460px] lg:w-[490px] shrink-0 border-r border-slate-800 bg-[#070b14] flex flex-col z-20 transition-all ${
             mobileView === "list" ? "block" : "hidden md:flex"
           }`}
         >
           {/* Quick Filters Row */}
-          <div className="p-3.5 border-b border-[#dde4dd] bg-white space-y-2.5 shadow-sm">
+          <div className="p-3.5 border-b border-slate-800 bg-[#0a101f] space-y-2.5 shadow-sm">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-[#161d19] uppercase tracking-wider flex items-center gap-1.5">
-                <SlidersHorizontal className="w-3.5 h-3.5 text-[#006c49]" />
+              <span className="text-xs font-bold text-slate-200 uppercase tracking-wider flex items-center gap-1.5">
+                <SlidersHorizontal className="w-3.5 h-3.5 text-emerald-400" />
                 Filter Community Chargers
               </span>
               <button
                 onClick={resetFilters}
-                className="text-[11px] text-[#3c4a42] hover:text-[#006c49] flex items-center gap-1 transition"
+                className="text-[11px] text-slate-400 hover:text-emerald-400 flex items-center gap-1 transition"
               >
                 <RotateCcw className="w-3 h-3" />
                 Reset
@@ -436,13 +406,13 @@ export default function ExplorePage() {
             <div className="grid grid-cols-2 gap-2 text-xs">
               {/* Power Selector */}
               <div>
-                <label className="text-[10px] text-[#3c4a42] font-semibold block mb-1">
+                <label className="text-[10px] text-slate-400 font-semibold block mb-1">
                   Charger Power
                 </label>
                 <select
                   value={selectedPower}
                   onChange={(e) => setSelectedPower(e.target.value)}
-                  className="w-full bg-[#eef6ee] border border-[#dde4dd] rounded-lg px-2.5 py-1.5 text-[#161d19] text-xs font-medium focus:outline-none"
+                  className="w-full bg-slate-900 border border-slate-700/80 rounded-lg px-2.5 py-1.5 text-slate-200 text-xs font-medium focus:border-emerald-500 focus:outline-none"
                 >
                   <option value="all">All Power (3.3 - 22 kW)</option>
                   <option value="7.2">7.2 kW AC (Fastest Home)</option>
@@ -454,13 +424,13 @@ export default function ExplorePage() {
 
               {/* Vehicle Compatibility */}
               <div>
-                <label className="text-[10px] text-[#3c4a42] font-semibold block mb-1">
+                <label className="text-[10px] text-slate-400 font-semibold block mb-1">
                   My Vehicle
                 </label>
                 <select
                   value={selectedVehicleModel}
                   onChange={(e) => setSelectedVehicleModel(e.target.value)}
-                  className="w-full bg-[#eef6ee] border border-[#dde4dd] rounded-lg px-2.5 py-1.5 text-[#161d19] text-xs font-medium focus:outline-none"
+                  className="w-full bg-slate-900 border border-slate-700/80 rounded-lg px-2.5 py-1.5 text-slate-200 text-xs font-medium focus:border-emerald-500 focus:outline-none"
                 >
                   <option value="all">Any EV Model</option>
                   <option value="Tata">Tata Nexon EV</option>
@@ -473,17 +443,17 @@ export default function ExplorePage() {
             </div>
 
             <div className="flex items-center justify-between pt-1">
-              <label className="flex items-center gap-2 cursor-pointer text-xs font-medium text-[#161d19]">
+              <label className="flex items-center gap-2 cursor-pointer text-xs font-medium text-slate-300">
                 <input
                   type="checkbox"
                   checked={availableTonightOnly}
                   onChange={(e) => setAvailableTonightOnly(e.target.checked)}
-                  className="accent-[#006c49] rounded w-3.5 h-3.5"
+                  className="accent-emerald-500 rounded w-3.5 h-3.5"
                 />
                 <span>Available Tonight Only</span>
               </label>
 
-              <span className="text-[11px] font-semibold text-[#006c49]">
+              <span className="text-[11px] font-semibold text-emerald-400">
                 {filteredChargers.length} chargers found
               </span>
             </div>
@@ -492,37 +462,36 @@ export default function ExplorePage() {
           {/* Scrollable Charger Cards List */}
           <div className="flex-1 overflow-y-auto p-3.5 space-y-3">
             {isLoading ? (
-              <div className="p-8 text-center text-xs text-[#3c4a42]">
-                <div className="w-6 h-6 border-2 border-[#006c49] border-t-transparent rounded-full animate-spin mx-auto mb-2" />
+              <div className="p-8 text-center text-xs text-slate-400">
+                <div className="w-6 h-6 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
                 <p>Loading real community chargers...</p>
               </div>
             ) : allChargers.length === 0 ? (
-              /* Requirement 13: Beautiful empty state when no chargers exist */
-              <div className="p-8 text-center bg-white rounded-2xl border border-[#dde4dd] shadow-sm">
-                <div className="w-12 h-12 rounded-full bg-[#eef6ee] text-[#006c49] flex items-center justify-center mx-auto mb-3">
+              <div className="p-8 text-center bg-slate-900/60 rounded-2xl border border-slate-800 shadow-sm">
+                <div className="w-12 h-12 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center mx-auto mb-3 border border-emerald-500/20">
                   <Zap className="w-6 h-6" />
                 </div>
-                <h4 className="font-bold text-base text-[#161d19] mb-1">
+                <h4 className="font-bold text-base text-white mb-1">
                   No community chargers are available yet.
                 </h4>
-                <p className="text-xs text-[#3c4a42] mb-5 max-w-xs mx-auto leading-relaxed">
+                <p className="text-xs text-slate-400 mb-5 max-w-xs mx-auto leading-relaxed">
                   Be the first host in your area. Turn your idle home wallbox into passive income while helping EV travelers charge overnight.
                 </p>
                 <Link
                   href="/host/list"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#006c49] hover:bg-[#005236] text-white font-bold text-xs shadow-sm transition"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 font-bold text-xs shadow-md shadow-emerald-500/20 transition"
                 >
                   <PlusCircle className="w-4 h-4" />
                   <span>List Your Charger</span>
                 </Link>
               </div>
             ) : filteredChargers.length === 0 ? (
-              <div className="p-8 text-center text-xs text-[#3c4a42] bg-white rounded-2xl border border-[#dde4dd]">
-                <p className="font-semibold text-sm text-[#161d19] mb-1">No chargers match your filters</p>
+              <div className="p-8 text-center text-xs text-slate-400 bg-slate-900/60 rounded-2xl border border-slate-800">
+                <p className="font-semibold text-sm text-white mb-1">No chargers match your filters</p>
                 <p className="mb-4">Try clearing some criteria or expanding your radius along your route.</p>
                 <button
                   onClick={resetFilters}
-                  className="px-4 py-2 rounded-xl bg-[#006c49] text-white font-bold text-xs shadow-sm"
+                  className="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs shadow-sm hover:bg-emerald-400 transition"
                 >
                   Reset All Filters
                 </button>
@@ -536,63 +505,65 @@ export default function ExplorePage() {
                     onClick={() => setSelectedChargerId(c.chargerId)}
                     className={`p-4 rounded-2xl transition-all cursor-pointer border ${
                       isSelected
-                        ? "bg-white border-[#006c49] shadow-md ring-2 ring-[#006c49]/20"
-                        : "bg-white border-[#dde4dd] hover:border-[#bbcabf] shadow-sm"
+                        ? "bg-slate-900 border-emerald-400 shadow-lg ring-1 ring-emerald-400/40"
+                        : "bg-slate-900/60 border-slate-800/80 hover:border-emerald-500/40 hover:bg-slate-900/90 shadow-sm"
                     }`}
                   >
                     {/* Top Row: Power & Availability */}
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-1.5 flex-wrap">
-                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#eef6ee] text-[#006c49] border border-[#82f5c1]/60">
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
                           ⚡ {c.powerKw} kW AC
                         </span>
-                        <span className="text-[10px] text-[#3c4a42] font-medium">
+                        <span className="text-[10px] text-slate-400 font-medium">
                           {c.connectorType}
                         </span>
+                        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                         {(c as any).distanceKm !== undefined && (
-                          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#006c49] text-white flex items-center gap-1 shadow-xs">
+                          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-emerald-400 border border-slate-700 flex items-center gap-1">
                             <Navigation className="w-2.5 h-2.5" />
+                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                             <span>{(c as any).distanceKm} km (~{Math.max(3, Math.round((c as any).distanceKm * 2.5))} min drive)</span>
                           </span>
                         )}
                       </div>
 
                       <div className="flex items-center gap-1">
-                        <span className="text-xs font-bold text-amber-600 flex items-center gap-0.5">
+                        <span className="text-xs font-bold text-amber-400 flex items-center gap-0.5">
                           ★ {c.rating}
                         </span>
-                        <span className="text-[10px] text-[#3c4a42]">
+                        <span className="text-[10px] text-slate-500">
                           ({c.reviewCount})
                         </span>
                       </div>
                     </div>
 
                     {/* Charger Title & Location */}
-                    <h3 className="font-bold text-sm sm:text-base text-[#161d19] mb-1 leading-snug">
+                    <h3 className="font-bold text-sm sm:text-base text-white mb-1 leading-snug">
                       {c.title}
                     </h3>
 
-                    <p className="text-xs text-[#3c4a42] mb-3 flex items-center gap-1">
-                      <MapPin className="w-3.5 h-3.5 text-[#006c49] shrink-0" />
+                    <p className="text-xs text-slate-400 mb-3 flex items-center gap-1">
+                      <MapPin className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                       <span>
                         {c.address}, {c.city}
                       </span>
                     </p>
 
                     {/* AI Verification Badge */}
-                    <div className="flex items-center gap-1.5 text-[11px] text-[#006c49] mb-3 bg-[#eef6ee] px-2.5 py-1 rounded-lg w-max font-medium">
-                      <ShieldCheck className="w-3.5 h-3.5 text-[#006c49]" />
-                      <span>AI-assisted verification ({Math.round((c.verificationScore || 0.9) * 100)}% confidence)</span>
+                    <div className="flex items-center gap-1.5 text-[11px] text-emerald-400 mb-3 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-lg w-max font-medium">
+                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                      <span>AI verified ({Math.round((c.verificationScore || 0.9) * 100)}% confidence)</span>
                     </div>
 
                     {/* Bottom Pricing & Action */}
-                    <div className="pt-2.5 border-t border-[#dde4dd] flex items-center justify-between">
+                    <div className="pt-2.5 border-t border-slate-800 flex items-center justify-between">
                       <div>
-                        <div className="text-xs font-black text-[#161d19]">
+                        <div className="text-xs font-black text-white">
                           ₹{c.electricityRate}{" "}
-                          <span className="text-[10px] text-[#3c4a42] font-normal">/kWh</span>
+                          <span className="text-[10px] text-slate-400 font-normal">/kWh</span>
                         </div>
-                        <div className="text-[10px] text-[#3c4a42]">
+                        <div className="text-[10px] text-slate-500">
                           + ₹{c.hostFee} host access
                         </div>
                       </div>
@@ -604,7 +575,7 @@ export default function ExplorePage() {
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={(e) => e.stopPropagation()}
-                            className="p-2 rounded-xl text-[#006c49] bg-[#eef6ee] hover:bg-[#dde4dd] transition"
+                            className="p-2 rounded-xl text-emerald-400 bg-slate-800 hover:bg-slate-700 transition"
                             title="Direct Navigation via Google Maps"
                           >
                             <Navigation className="w-3.5 h-3.5" />
@@ -612,13 +583,13 @@ export default function ExplorePage() {
                         )}
                         <Link
                           href={`/charger/${c.chargerId}`}
-                          className="px-3 py-1.5 rounded-xl text-xs font-bold text-[#006c49] bg-[#eef6ee] hover:bg-[#dde4dd] transition"
+                          className="px-3 py-1.5 rounded-xl text-xs font-bold text-slate-300 bg-slate-800 hover:bg-slate-700 border border-slate-700 transition"
                         >
                           Details
                         </Link>
                         <Link
                           href={`/booking/${c.chargerId}`}
-                          className="px-3.5 py-1.5 rounded-xl text-xs font-bold text-white bg-[#006c49] hover:bg-[#005236] shadow-sm transition flex items-center gap-1"
+                          className="px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-950 bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 shadow-md shadow-emerald-500/20 transition flex items-center gap-1"
                         >
                           <span>Reserve</span>
                           <ChevronRight className="w-3.5 h-3.5" />
