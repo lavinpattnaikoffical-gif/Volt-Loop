@@ -13,7 +13,7 @@
 Private EV chargers are heavily underutilized while EV travelers struggle to find reliable charging on highways and rural routes.
 
 * **The Idle Asset**: Over 85% of EV owners install 3.3 kW, 7.2 kW, 11 kW, or 22 kW AC wallboxes at their residences. These chargers remain idle for 18–20 hours daily.
-* **The Highway & Semi-Urban Void**: Fast-charging infrastructure is sparse outside tier-1 expressways. EV travelers heading toward tier-2/3 towns or rural corridors face severe range anxiety and broken public stations.
+* **The Highway & Semi-Urban Void**: Fast-charging infrastructure is sparse outside tier-1 expressways. EV travelers heading toward tier-2/3 towns or rural corridors (e.g., Raipur to Visakhapatnam Road — The longest road trip through the Ghats) face severe range anxiety and broken public stations.
 
 ---
 
