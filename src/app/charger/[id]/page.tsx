@@ -148,8 +148,8 @@ export default function ChargerDetailsPage() {
     return (
       <div className="flex-1 flex items-center justify-center p-8 pt-24 min-h-[60vh] bg-[#f4fbf4]">
         <div className="text-center">
-          <div className="w-8 h-8 border-3 border-[#006c49] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-          <p className="text-xs text-[#3c4a42]">Loading Charger Profile...</p>
+          <div className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+          <p className="text-xs text-[#888888] font-mono">Loading Charger Profile...</p>
         </div>
       </div>
     );
@@ -157,18 +157,18 @@ export default function ChargerDetailsPage() {
 
   if (!charger) {
     return (
-      <div className="flex-1 flex items-center justify-center p-8 pt-24 min-h-[60vh] bg-[#f4fbf4]">
-        <div className="max-w-md w-full bg-white border border-[#dde4dd] rounded-3xl p-8 text-center shadow-sm">
-          <div className="w-12 h-12 rounded-full bg-[#eef6ee] text-[#006c49] flex items-center justify-center mx-auto mb-3">
+      <div className="flex-1 flex items-center justify-center p-8 pt-24 min-h-[60vh] bg-black">
+        <div className="max-w-md w-full vercel-card p-8 text-center">
+          <div className="w-12 h-12 rounded-full bg-[#171717] border border-[#262626] text-white flex items-center justify-center mx-auto mb-3">
             <Zap className="w-6 h-6" />
           </div>
-          <h2 className="text-xl font-bold text-[#161d19] mb-2">Charger Not Found</h2>
-          <p className="text-xs text-[#3c4a42] mb-6">
+          <h2 className="text-xl font-bold text-white mb-2">Charger Not Found</h2>
+          <p className="text-xs text-[#888888] mb-6">
             This charger may have been removed, or is currently pending host verification.
           </p>
           <Link
             href="/explore"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#006c49] text-white font-bold text-xs shadow-sm hover:bg-[#005236] transition"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-white text-black font-medium text-xs hover:bg-[#d4d4d4] transition-colors"
           >
             <span>Explore Community Chargers</span>
             <ArrowRight className="w-4 h-4" />
@@ -210,15 +210,15 @@ export default function ChargerDetailsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f4fbf4] text-[#161d19] pt-16 pb-20">
+    <div className="min-h-screen bg-black text-[#ededed] pt-16 pb-20">
       {/* Top Gallery & Navigation Header */}
-      <div className="w-full bg-[#eef6ee] border-b border-[#dde4dd] pt-6 pb-8 px-4 sm:px-6 lg:px-8">
+      <div className="w-full bg-[#000000] border-b border-[#222222] pt-6 pb-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           {/* Back & Actions */}
           <div className="flex items-center justify-between mb-4">
             <button
               onClick={() => router.push("/explore")}
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-[#006c49] hover:underline"
+              className="inline-flex items-center gap-1.5 text-xs font-mono text-[#888888] hover:text-white transition-colors"
             >
               <ChevronLeft className="w-4 h-4" />
               <span>Back to Explore</span>
@@ -227,16 +227,16 @@ export default function ChargerDetailsPage() {
             <div className="flex items-center gap-2">
               <button
                 onClick={handleShare}
-                className="w-9 h-9 rounded-full bg-white border border-[#dde4dd] flex items-center justify-center shadow-sm text-[#161d19] hover:text-[#006c49] transition"
+                className="w-8 h-8 rounded-md bg-[#141414] border border-[#262626] flex items-center justify-center text-[#888888] hover:text-white transition-colors"
                 title="Share Listing"
               >
-                <Share2 className="w-4 h-4" />
+                <Share2 className="w-3.5 h-3.5" />
               </button>
               <button
-                className="w-9 h-9 rounded-full bg-white border border-[#dde4dd] flex items-center justify-center shadow-sm text-[#161d19] hover:text-[#006c49] transition"
+                className="w-8 h-8 rounded-md bg-[#141414] border border-[#262626] flex items-center justify-center text-[#888888] hover:text-white transition-colors"
                 title="Save Bookmark"
               >
-                <Bookmark className="w-4 h-4" />
+                <Bookmark className="w-3.5 h-3.5" />
               </button>
             </div>
           </div>
@@ -244,22 +244,22 @@ export default function ChargerDetailsPage() {
           {/* Image Gallery Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 h-[320px] sm:h-[380px]">
             {/* Primary Main Image */}
-            <div className="md:col-span-2 h-full rounded-2xl overflow-hidden relative group shadow-sm border border-[#dde4dd]">
+            <div className="md:col-span-2 h-full rounded-xl overflow-hidden relative group border border-[#262626]">
               <div
                 className="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
                 style={{
                   backgroundImage: `url(${charger.images?.[0] || "https://images.unsplash.com/photo-1558441719-74e4479e4384?w=800&auto=format&fit=crop&q=80"})`,
                 }}
               />
-              <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full flex items-center gap-2 shadow-sm border border-[#dde4dd]">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#006c49] animate-pulse" />
-                <span className="text-xs font-bold text-[#161d19]">Verified Host Location</span>
+              <div className="absolute top-4 left-4 bg-black/80 backdrop-blur-md px-2.5 py-1 rounded-md flex items-center gap-2 border border-[#333333]">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="text-[11px] font-mono text-white">Verified Host Location</span>
               </div>
             </div>
 
             {/* Side Photos */}
             <div className="hidden md:flex flex-col gap-4 h-full">
-              <div className="h-1/2 rounded-2xl overflow-hidden relative group shadow-sm border border-[#dde4dd]">
+              <div className="h-1/2 rounded-xl overflow-hidden relative group border border-[#262626]">
                 <div
                   className="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
                   style={{
@@ -268,15 +268,15 @@ export default function ChargerDetailsPage() {
                 />
               </div>
 
-              <div className="h-1/2 rounded-2xl overflow-hidden relative group shadow-sm border border-[#dde4dd]">
+              <div className="h-1/2 rounded-xl overflow-hidden relative group border border-[#262626]">
                 <div
                   className="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
                   style={{
                     backgroundImage: `url(${charger.images?.[2] || "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=600&auto=format&fit=crop&q=80"})`,
                   }}
                 />
-                <div className="absolute inset-0 bg-black/40 flex items-center justify-center backdrop-blur-[1px]">
-                  <span className="text-white font-bold text-xs">+3 Photos</span>
+                <div className="absolute inset-0 bg-black/50 flex items-center justify-center backdrop-blur-[1px]">
+                  <span className="text-white font-mono text-xs">+3 Photos</span>
                 </div>
               </div>
             </div>
@@ -292,71 +292,71 @@ export default function ChargerDetailsPage() {
             {/* Title & Trust Header */}
             <div>
               <div className="flex items-center gap-2 flex-wrap mb-2">
-                <span className="px-2.5 py-1 bg-[#82f5c1] text-[#00714e] rounded-full text-xs font-bold">
+                <span className="px-2 py-0.5 bg-[#171717] border border-[#262626] text-white rounded-md text-[11px] font-mono">
                   Private Wallbox L2
                 </span>
-                <span className="text-[#3c4a42] text-xs">•</span>
-                <span className="text-[#3c4a42] text-xs">
+                <span className="text-[#666666] text-xs">•</span>
+                <span className="text-[#888888] text-xs font-mono">
                   {charger.city} {charger.address} (Exact GPS post-booking)
                 </span>
               </div>
 
-              <h1 className="text-2xl sm:text-3xl font-black text-[#161d19] tracking-tight mb-3">
+              <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight mb-3">
                 {charger.title}
               </h1>
 
               {/* Trust Badges */}
               <div className="flex items-center gap-2.5 flex-wrap">
-                <div className="flex items-center gap-1.5 px-3 py-1.5 bg-[#eef6ee] rounded-xl border border-[#dde4dd]">
-                  <ShieldCheck className="w-4 h-4 text-[#006c49]" />
-                  <span className="text-xs font-semibold text-[#161d19]">
-                    AI-assisted verification (94% confidence)
+                <div className="flex items-center gap-1.5 px-3 py-1 bg-[#141414] rounded-md border border-[#262626]">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                  <span className="text-xs text-[#a1a1a1]">
+                    AI-verified (94% confidence)
                   </span>
                 </div>
 
-                <div className="flex items-center gap-1.5 px-3 py-1.5 bg-[#eef6ee] rounded-xl border border-[#dde4dd]">
-                  <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
-                  <span className="text-xs font-bold text-[#161d19]">
-                    {charger.rating} <span className="text-[#3c4a42] font-normal">({charger.reviewCount} reviews)</span>
+                <div className="flex items-center gap-1.5 px-3 py-1 bg-[#141414] rounded-md border border-[#262626]">
+                  <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+                  <span className="text-xs font-mono text-white">
+                    {charger.rating} <span className="text-[#666666] font-normal">({charger.reviewCount} reviews)</span>
                   </span>
                 </div>
 
-                <div className="flex items-center gap-1.5 px-3 py-1.5 bg-[#eef6ee] rounded-xl border border-[#dde4dd]">
-                  <Zap className="w-4 h-4 text-[#006c49]" />
-                  <span className="text-xs font-semibold text-[#006c49]">
-                    🟢 Available Tonight
+                <div className="flex items-center gap-1.5 px-3 py-1 bg-[#141414] rounded-md border border-[#262626]">
+                  <Zap className="w-3.5 h-3.5 text-emerald-400" />
+                  <span className="text-xs text-emerald-400 font-mono">
+                    Available Tonight
                   </span>
                 </div>
               </div>
             </div>
 
             {/* Emergency Low Battery Warning Note */}
-            <div className="bg-[#ffdad6] text-[#93000a] p-4 rounded-2xl flex items-start gap-3 border border-[#fc7c78]/40 shadow-sm">
-              <AlertTriangle className="w-5 h-5 text-[#ba1a1a] shrink-0 mt-0.5" />
-              <div className="text-xs leading-relaxed">
-                <span className="font-bold text-sm block mb-0.5">Emergency Low Battery Support Active</span>
+            <div className="bg-rose-950/20 text-rose-400 p-4 rounded-xl flex items-start gap-3 border border-rose-900/40">
+              <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+              <div className="text-xs leading-relaxed text-[#ededed]">
+                <span className="font-semibold text-rose-300 block mb-0.5">Emergency Low Battery Support Active</span>
                 Need immediate emergency charging? This host offers priority driveway access for vehicles under 15% charge. Instant reserve is enabled below.
               </div>
             </div>
 
             {/* Live Distance & Navigation Route Banner */}
             {distanceKm !== null ? (
-              <div className="bg-[#eef6ee] border border-[#c2e2c8] p-4 sm:p-5 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs">
+              <div className="vercel-card p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-start sm:items-center gap-3.5">
-                  <div className="w-11 h-11 rounded-xl bg-[#006c49] text-white flex items-center justify-center shrink-0 shadow-sm">
-                    <Navigation className="w-5 h-5" />
+                  <div className="w-10 h-10 rounded-lg bg-[#171717] border border-[#262626] text-white flex items-center justify-center shrink-0">
+                    <Navigation className="w-4 h-4" />
                   </div>
                   <div>
                     <div className="flex items-center gap-2 flex-wrap mb-1">
-                      <span className="text-sm font-extrabold text-[#161d19]">
-                        {distanceKm} km from your current location
+                      <span className="text-sm font-semibold text-white">
+                        {distanceKm} km from your location
                       </span>
-                      <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#82f5c1] text-[#00714e]">
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#171717] border border-[#262626] text-emerald-400">
                         ~{driveMinutes} min drive
                       </span>
                     </div>
-                    <p className="text-xs text-[#3c4a42]">
-                      Direct route from your GPS location to {charger.address}, {charger.city}
+                    <p className="text-xs text-[#888888]">
+                      Direct route to {charger.address}, {charger.city}
                     </p>
                   </div>
                 </div>
@@ -365,24 +365,24 @@ export default function ChargerDetailsPage() {
                   href={googleMapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#006c49] hover:bg-[#005236] text-white text-xs font-bold transition shadow-sm shrink-0"
+                  className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-md bg-white text-black text-xs font-medium hover:bg-[#d4d4d4] transition-colors shrink-0"
                 >
                   <Navigation className="w-3.5 h-3.5" />
-                  <span>Navigate in Google Maps</span>
+                  <span>Google Maps</span>
                 </a>
               </div>
             ) : (
-              <div className="bg-[#eef6ee] border border-[#c2e2c8] p-4 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+              <div className="vercel-card p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-white border border-[#c2e2c8] text-[#006c49] flex items-center justify-center shrink-0">
+                  <div className="w-9 h-9 rounded-lg bg-[#141414] border border-[#262626] text-[#888888] flex items-center justify-center shrink-0">
                     <Navigation className="w-4 h-4" />
                   </div>
                   <div>
-                    <span className="text-xs font-bold text-[#161d19] block">
+                    <span className="text-xs font-medium text-white block">
                       Check Distance from Current Location
                     </span>
-                    <span className="text-[11px] text-[#3c4a42]">
-                      Enable GPS to see exact distance and estimated driving time to this charger
+                    <span className="text-[11px] text-[#888888]">
+                      Enable GPS to see exact distance and driving time
                     </span>
                   </div>
                 </div>
@@ -390,7 +390,7 @@ export default function ChargerDetailsPage() {
                 <button
                   onClick={handleGetLocation}
                   disabled={isLocating}
-                  className="px-3.5 py-2 rounded-xl bg-[#006c49] hover:bg-[#005236] text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm shrink-0"
+                  className="px-3 py-1.5 rounded-md bg-[#141414] hover:bg-[#1f1f1f] text-white border border-[#262626] text-xs font-medium transition-colors flex items-center justify-center gap-1.5 shrink-0"
                 >
                   {isLocating ? (
                     <>
@@ -408,75 +408,75 @@ export default function ChargerDetailsPage() {
             )}
 
             {/* 1. Vehicle Compatibility Section */}
-            <div className="bg-white p-5 rounded-2xl border border-[#dde4dd] shadow-sm flex flex-col gap-3">
+            <div className="vercel-card p-5 flex flex-col gap-3">
               <div className="flex items-center justify-between">
-                <h2 className="text-base font-bold text-[#161d19]">Vehicle Compatibility</h2>
-                <div className="flex items-center gap-1 text-[#006c49] bg-[#eef6ee] px-2.5 py-1 rounded-full text-xs font-bold">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#006c49]" />
-                  <span>Compatible with {selectedVehicle.brand} ✓</span>
+                <h2 className="text-sm font-semibold text-white">Vehicle Compatibility</h2>
+                <div className="flex items-center gap-1 text-emerald-400 bg-emerald-950/30 border border-emerald-900/40 px-2 py-0.5 rounded text-[11px] font-mono">
+                  <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                  <span>Compatible with {selectedVehicle.brand}</span>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 bg-[#eef6ee] p-3 rounded-xl border border-[#dde4dd]">
-                <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-[#006c49] shrink-0 shadow-sm">
-                  <Car className="w-5 h-5" />
+              <div className="flex items-center gap-3 bg-[#000000] p-3 rounded-lg border border-[#222222]">
+                <div className="w-9 h-9 rounded-md bg-[#141414] border border-[#262626] flex items-center justify-center text-white shrink-0">
+                  <Car className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="text-xs font-bold text-[#161d19] block">
+                  <span className="text-xs font-medium text-white block">
                     {selectedVehicle.brand} {selectedVehicle.model} ({selectedVehicle.batteryCapacityKwh} kWh)
                   </span>
-                  <span className="text-[11px] text-[#3c4a42]">
-                    Standard {selectedVehicle.connectorType} port • Onboard AC acceptance: {selectedVehicle.maxAcChargingKw} kW
+                  <span className="text-[11px] text-[#888888] font-mono">
+                    Standard {selectedVehicle.connectorType} port • Max AC: {selectedVehicle.maxAcChargingKw} kW
                   </span>
                 </div>
               </div>
             </div>
 
             {/* 2. Specifications Grid */}
-            <div className="bg-white p-5 rounded-2xl border border-[#dde4dd] shadow-sm space-y-4">
-              <h2 className="text-base font-bold text-[#161d19]">Charger Specifications</h2>
+            <div className="vercel-card p-5 space-y-4">
+              <h2 className="text-sm font-semibold text-white">Charger Specifications</h2>
 
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center text-xs">
-                <div className="p-3 rounded-xl bg-[#eef6ee] border border-[#dde4dd]">
-                  <span className="text-[10px] text-[#3c4a42] uppercase font-medium block">Power Output</span>
-                  <strong className="text-sm font-bold text-[#006c49]">{charger.powerKw} kW AC</strong>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-center text-xs">
+                <div className="p-3 rounded-lg bg-[#000000] border border-[#222222]">
+                  <span className="text-[10px] text-[#666666] uppercase font-mono block">Power Output</span>
+                  <strong className="text-sm font-semibold text-white font-mono">{charger.powerKw} kW AC</strong>
                 </div>
 
-                <div className="p-3 rounded-xl bg-[#eef6ee] border border-[#dde4dd]">
-                  <span className="text-[10px] text-[#3c4a42] uppercase font-medium block">Connector</span>
-                  <strong className="text-sm font-bold text-[#161d19]">{charger.connectorType}</strong>
+                <div className="p-3 rounded-lg bg-[#000000] border border-[#222222]">
+                  <span className="text-[10px] text-[#666666] uppercase font-mono block">Connector</span>
+                  <strong className="text-sm font-semibold text-white">{charger.connectorType}</strong>
                 </div>
 
-                <div className="p-3 rounded-xl bg-[#eef6ee] border border-[#dde4dd]">
-                  <span className="text-[10px] text-[#3c4a42] uppercase font-medium block">Parking Type</span>
-                  <strong className="text-sm font-bold text-[#161d19]">Driveway</strong>
+                <div className="p-3 rounded-lg bg-[#000000] border border-[#222222]">
+                  <span className="text-[10px] text-[#666666] uppercase font-mono block">Parking Type</span>
+                  <strong className="text-sm font-semibold text-white">Driveway</strong>
                 </div>
 
-                <div className="p-3 rounded-xl bg-[#eef6ee] border border-[#dde4dd]">
-                  <span className="text-[10px] text-[#3c4a42] uppercase font-medium block">Access Type</span>
-                  <strong className="text-sm font-bold text-[#006c49]">RFID / QR</strong>
+                <div className="p-3 rounded-lg bg-[#000000] border border-[#222222]">
+                  <span className="text-[10px] text-[#666666] uppercase font-mono block">Access Type</span>
+                  <strong className="text-sm font-semibold text-white font-mono">RFID / QR</strong>
                 </div>
               </div>
 
-              <p className="text-xs text-[#3c4a42] leading-relaxed pt-2 border-t border-[#dde4dd]">
+              <p className="text-xs text-[#888888] leading-relaxed pt-2 border-t border-[#222222]">
                 {charger.description}
               </p>
             </div>
 
             {/* 3. Host Profile Card */}
-            <div className="bg-white p-5 rounded-2xl border border-[#dde4dd] shadow-sm flex items-center justify-between">
+            <div className="vercel-card p-5 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-[#006c49] text-white flex items-center justify-center font-bold text-base shadow-sm">
+                <div className="w-10 h-10 rounded-full bg-[#171717] border border-[#262626] text-white flex items-center justify-center font-bold text-sm">
                   {(charger.hostName || "H")[0].toUpperCase()}
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-[#161d19] flex items-center gap-1.5">
+                  <h3 className="text-xs font-semibold text-white flex items-center gap-1.5">
                     <span>Hosted by {charger.hostName || "Community Host"}</span>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#82f5c1] text-[#00714e]">
-                      Verified Host
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#171717] border border-[#262626] text-emerald-400">
+                      Verified
                     </span>
                   </h3>
-                  <p className="text-xs text-[#3c4a42]">
+                  <p className="text-[11px] text-[#888888]">
                     {charger.reviewCount} verified community reviews
                   </p>
                 </div>
@@ -484,31 +484,30 @@ export default function ChargerDetailsPage() {
             </div>
 
             {/* 4. Host Reviews */}
-            <div className="bg-white p-5 rounded-2xl border border-[#dde4dd] shadow-sm space-y-4">
+            <div className="vercel-card p-5 space-y-4">
               <div className="flex items-center justify-between">
-                <h2 className="text-base font-bold text-[#161d19]">Guest Reviews</h2>
-                <span className="text-xs font-bold text-amber-600 flex items-center gap-1">
+                <h2 className="text-sm font-semibold text-white">Guest Reviews</h2>
+                <span className="text-xs font-mono text-amber-400 flex items-center gap-1">
                   ★ {charger.rating} rating ({reviews.length})
                 </span>
               </div>
 
               {reviews.length === 0 ? (
-                /* Requirement 18: No Reviews Empty State */
-                <div className="p-6 text-center rounded-xl bg-[#eef6ee] border border-[#dde4dd]">
-                  <p className="text-xs text-[#3c4a42]">
+                <div className="p-6 text-center rounded-lg bg-[#000000] border border-[#222222]">
+                  <p className="text-xs text-[#888888]">
                     Be the first person to review this charger after completing a charging session.
                   </p>
                 </div>
               ) : (
-                <div className="space-y-3">
+                <div className="space-y-2.5">
                   {reviews.map((r) => (
-                    <div key={r.reviewId} className="p-3.5 rounded-xl bg-[#eef6ee] border border-[#dde4dd]">
-                      <div className="flex items-center justify-between mb-1.5">
-                        <span className="text-xs font-bold text-[#161d19]">{r.userName}</span>
-                        <span className="text-[10px] text-amber-600 font-bold">★ {r.rating}.0</span>
+                    <div key={r.reviewId} className="p-3.5 rounded-lg bg-[#000000] border border-[#222222]">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-xs font-medium text-white">{r.userName}</span>
+                        <span className="text-[10px] font-mono text-amber-400">★ {r.rating}.0</span>
                       </div>
-                      <p className="text-xs text-[#3c4a42] leading-relaxed mb-1">{r.comment}</p>
-                      <span className="text-[10px] text-[#3c4a42]/70 font-mono">{r.vehicleModel}</span>
+                      <p className="text-xs text-[#888888] leading-relaxed mb-1">{r.comment}</p>
+                      <span className="text-[10px] text-[#666666] font-mono">{r.vehicleModel}</span>
                     </div>
                   ))}
                 </div>
@@ -518,40 +517,40 @@ export default function ChargerDetailsPage() {
 
           {/* Right Column: Sticky Booking & AI Estimator Card */}
           <div className="lg:col-span-5 sticky top-24 space-y-4">
-            <div className="bg-white border-2 border-[#006c49]/30 rounded-3xl p-6 shadow-md">
+            <div className="vercel-card p-6 border-[#333333]">
               {/* Header Price */}
-              <div className="flex items-baseline justify-between pb-4 border-b border-[#dde4dd] mb-4">
+              <div className="flex items-baseline justify-between pb-4 border-b border-[#222222] mb-4">
                 <div>
-                  <span className="text-2xl font-black text-[#161d19]">₹{charger.electricityRate}</span>
-                  <span className="text-xs text-[#3c4a42]"> / kWh tariff</span>
+                  <span className="text-2xl font-bold font-mono text-white">₹{charger.electricityRate}</span>
+                  <span className="text-xs text-[#888888]"> / kWh</span>
                 </div>
                 <div className="text-right">
-                  <span className="text-xs font-bold text-[#006c49]">+ ₹{charger.hostFee}</span>
-                  <span className="text-[10px] text-[#3c4a42] block">host access fee</span>
+                  <span className="text-xs font-mono text-emerald-400">+ ₹{charger.hostFee}</span>
+                  <span className="text-[10px] text-[#666666] block">host access fee</span>
                 </div>
               </div>
 
               {/* AI Charging Estimate Calculator */}
               <div className="space-y-4 mb-5">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-[#161d19] flex items-center gap-1.5 uppercase tracking-wide">
-                    <Sparkles className="w-3.5 h-3.5 text-[#006c49]" />
+                  <span className="text-xs font-mono text-white flex items-center gap-1.5 uppercase tracking-wide">
+                    <Sparkles className="w-3.5 h-3.5 text-[#0070f3]" />
                     AI Charging Estimate
                   </span>
-                  <span className="text-[10px] text-[#006c49] font-bold bg-[#eef6ee] px-2 py-0.5 rounded-md">
-                    Deterministic Physics
+                  <span className="text-[10px] font-mono text-[#888888] bg-[#141414] border border-[#262626] px-2 py-0.5 rounded">
+                    Physics Engine
                   </span>
                 </div>
 
                 {/* Vehicle Selection */}
                 <div>
-                  <label className="text-[11px] font-semibold text-[#3c4a42] block mb-1">
+                  <label className="text-[11px] font-mono text-[#888888] block mb-1">
                     Your Vehicle
                   </label>
                   <select
                     value={selectedVehicleId}
                     onChange={(e) => setSelectedVehicleId(e.target.value)}
-                    className="w-full bg-[#eef6ee] border border-[#dde4dd] rounded-xl px-3 py-2 text-xs text-[#161d19] font-medium focus:outline-none"
+                    className="w-full bg-[#000000] border border-[#262626] rounded-md px-3 py-2 text-xs text-white outline-none focus:border-[#555555]"
                   >
                     {vehicles.map((v) => (
                       <option key={v.vehicleId} value={v.vehicleId}>
@@ -562,11 +561,11 @@ export default function ChargerDetailsPage() {
                 </div>
 
                 {/* Battery SOC Sliders */}
-                <div className="grid grid-cols-2 gap-3 p-3 rounded-xl bg-[#eef6ee] border border-[#dde4dd]">
+                <div className="grid grid-cols-2 gap-3 p-3 rounded-lg bg-[#000000] border border-[#222222]">
                   <div>
                     <div className="flex justify-between text-xs mb-1">
-                      <span className="text-[11px] text-[#3c4a42]">Current</span>
-                      <strong className="text-xs font-bold text-amber-600">{currentSoc}%</strong>
+                      <span className="text-[11px] font-mono text-[#888888]">Current</span>
+                      <strong className="text-xs font-mono text-amber-400">{currentSoc}%</strong>
                     </div>
                     <input
                       type="range"
@@ -574,14 +573,14 @@ export default function ChargerDetailsPage() {
                       max="60"
                       value={currentSoc}
                       onChange={(e) => setCurrentSoc(Number(e.target.value))}
-                      className="w-full accent-[#006c49] h-1.5 bg-[#dde4dd] rounded-lg cursor-pointer"
+                      className="w-full accent-white h-1.5 bg-[#262626] rounded cursor-pointer"
                     />
                   </div>
 
                   <div>
                     <div className="flex justify-between text-xs mb-1">
-                      <span className="text-[11px] text-[#3c4a42]">Target</span>
-                      <strong className="text-xs font-bold text-[#006c49]">{targetSoc}%</strong>
+                      <span className="text-[11px] font-mono text-[#888888]">Target</span>
+                      <strong className="text-xs font-mono text-emerald-400">{targetSoc}%</strong>
                     </div>
                     <input
                       type="range"
@@ -589,73 +588,73 @@ export default function ChargerDetailsPage() {
                       max="100"
                       value={targetSoc}
                       onChange={(e) => setTargetSoc(Number(e.target.value))}
-                      className="w-full accent-[#006c49] h-1.5 bg-[#dde4dd] rounded-lg cursor-pointer"
+                      className="w-full accent-white h-1.5 bg-[#262626] rounded cursor-pointer"
                     />
                   </div>
                 </div>
 
                 {/* Calculated Energy & Duration Quick Stats */}
-                <div className="grid grid-cols-2 gap-2 text-center text-xs">
-                  <div className="p-2.5 rounded-xl bg-[#eef6ee] border border-[#dde4dd]">
-                    <span className="text-[10px] text-[#3c4a42] uppercase block">Est. Energy</span>
-                    <strong className="text-xs font-bold text-[#161d19]">~{metrics.energyRequiredKwh} kWh</strong>
+                <div className="grid grid-cols-2 gap-2 text-center text-xs font-mono">
+                  <div className="p-2.5 rounded-lg bg-[#000000] border border-[#222222]">
+                    <span className="text-[10px] text-[#666666] uppercase block">Est. Energy</span>
+                    <strong className="text-xs text-white">~{metrics.energyRequiredKwh} kWh</strong>
                   </div>
-                  <div className="p-2.5 rounded-xl bg-[#eef6ee] border border-[#dde4dd]">
-                    <span className="text-[10px] text-[#3c4a42] uppercase block">Est. Time</span>
-                    <strong className="text-xs font-bold text-[#006c49]">{metrics.formattedDuration}</strong>
+                  <div className="p-2.5 rounded-lg bg-[#000000] border border-[#222222]">
+                    <span className="text-[10px] text-[#666666] uppercase block">Est. Time</span>
+                    <strong className="text-xs text-white">{metrics.formattedDuration}</strong>
                   </div>
                 </div>
 
                 {/* Transparent Cost Breakdown */}
-                <div className="p-3.5 rounded-xl bg-[#eef6ee] border border-[#dde4dd] space-y-1.5 text-xs">
-                  <div className="flex justify-between text-[#3c4a42]">
+                <div className="p-3.5 rounded-lg bg-[#000000] border border-[#222222] space-y-1.5 text-xs font-mono">
+                  <div className="flex justify-between text-[#888888]">
                     <span>Energy ({metrics.energyRequiredKwh} kWh × ₹{charger.electricityRate})</span>
                     <span>₹{metrics.electricityCost}</span>
                   </div>
-                  <div className="flex justify-between text-[#3c4a42]">
-                    <span>Host Infrastructure Fee</span>
+                  <div className="flex justify-between text-[#888888]">
+                    <span>Host Fee</span>
                     <span>₹{metrics.hostFee}</span>
                   </div>
-                  <div className="flex justify-between text-[#3c4a42]">
+                  <div className="flex justify-between text-[#888888]">
                     <span>Platform Fee</span>
                     <span>₹{metrics.platformFee}</span>
                   </div>
-                  <div className="pt-2 border-t border-[#dde4dd] flex justify-between font-black text-sm text-[#161d19]">
-                    <span>Estimated Total</span>
-                    <span className="text-[#006c49]">₹{metrics.totalCost}</span>
+                  <div className="pt-2 border-t border-[#222222] flex justify-between font-bold text-sm text-white">
+                    <span>Total Amount</span>
+                    <span className="text-emerald-400">₹{metrics.totalCost}</span>
                   </div>
                 </div>
               </div>
 
               {/* Action Buttons */}
-              <div className="space-y-2.5">
+              <div className="space-y-2">
                 <Link
                   href={`/booking/${charger.chargerId}?vehicleId=${selectedVehicle.vehicleId}&initial=${currentSoc}&target=${targetSoc}`}
-                  className="w-full py-3.5 px-4 rounded-xl bg-[#006c49] hover:bg-[#005236] text-white font-bold text-sm text-center shadow-md transition flex items-center justify-center gap-2"
+                  className="w-full py-2.5 px-4 rounded-md bg-white hover:bg-[#d4d4d4] text-black font-medium text-xs sm:text-sm text-center transition-colors flex items-center justify-center gap-1.5"
                 >
-                  <Zap className="w-4 h-4" />
-                  <span>Reserve Charging Slot (₹{metrics.totalCost})</span>
+                  <Zap className="w-4 h-4 fill-black" />
+                  <span>Reserve Slot (₹{metrics.totalCost})</span>
                 </Link>
 
                 <a
                   href={googleMapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-2.5 px-4 rounded-xl bg-[#eef6ee] hover:bg-[#dde4dd] text-[#161d19] font-semibold text-xs text-center border border-[#dde4dd] transition flex items-center justify-center gap-1.5"
+                  className="w-full py-2 px-4 rounded-md bg-[#141414] hover:bg-[#1f1f1f] text-[#888888] hover:text-white font-medium text-xs text-center border border-[#262626] transition-colors flex items-center justify-center gap-1.5"
                 >
-                  <Navigation className="w-3.5 h-3.5 text-[#006c49]" />
+                  <Navigation className="w-3.5 h-3.5" />
                   <span>
                     {distanceKm !== null
-                      ? `Navigate with Google Maps (${distanceKm} km • ~${driveMinutes}m)`
-                      : "Navigate with Google Maps"}
+                      ? `Directions (${distanceKm} km • ~${driveMinutes}m)`
+                      : "Open in Google Maps"}
                   </span>
                 </a>
               </div>
 
               {/* Guarantee Footer */}
-              <div className="mt-4 pt-3 border-t border-[#dde4dd] flex items-center justify-center gap-2 text-[11px] text-[#3c4a42]">
-                <ShieldCheck className="w-4 h-4 text-[#006c49]" />
-                <span>100% Protected Community Booking Guarantee</span>
+              <div className="mt-4 pt-3 border-t border-[#222222] flex items-center justify-center gap-1.5 text-[11px] text-[#666666]">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                <span>100% Protected Community Booking</span>
               </div>
             </div>
           </div>
